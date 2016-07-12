@@ -34,7 +34,6 @@ import org.springframework.restdocs.test.ExpectedSnippet;
 import org.springframework.restdocs.test.OperationBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import uk.co.datumedge.hamcrest.json.SameJSONAs;
@@ -125,7 +124,7 @@ public class WireMockJsonSnippetTest {
 				of("method", "POST", "urlPath", "/", "headers", of("Content-Type", of("equalTo", "text/uri-list"))), //
 				"response", //
 				of("headers",
-						of("Content-Length", ImmutableList.of("16"), "Content-Type", ImmutableList.of("text/plain")),
+						of("Content-Length", "16", "Content-Type", "text/plain"),
 						"body", "response-content", "status", 200));
 	}
 
