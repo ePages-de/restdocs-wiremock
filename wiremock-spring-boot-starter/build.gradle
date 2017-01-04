@@ -30,7 +30,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-test'
     compile 'org.springframework.boot:spring-boot-starter'
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
-    compile 'com.github.tomakehurst:wiremock:2.3.1'
+    compile 'com.github.tomakehurst:wiremock:2.4.1'
     testCompile 'org.springframework:spring-web'
 }
 
