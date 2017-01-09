@@ -9,7 +9,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'eclipse'
 
 repositories {
-	mavenLocal()
+    mavenLocal()
 }
 
 dependencies {
