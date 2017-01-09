@@ -11,6 +11,10 @@ scmVersion {
     tag {
         prefix = ''
     }
+    nextVersion {
+        suffix = 'rc'
+        separator = '-'
+    }
 
     hooks {
         pre 'fileUpdate', [file: 'README.md', pattern: {v,p -> /($v)/}, replacement: {v, p -> "$v"}]
