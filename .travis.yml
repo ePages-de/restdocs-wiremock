@@ -7,7 +7,8 @@ cache:
   - "$HOME/.gradle"
 install: true
 script: "./gradlew clean build jacoco coveralls"
-after_success: "./publish.sh"
+after_success: 
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./publish.sh; fi'
 env:
   global:
   - CI_NAME=travis-ci
