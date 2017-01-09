@@ -19,6 +19,18 @@ scmVersion {
 }
 
 allprojects {
+	buildscript {
+		repositories {
+			jcenter()
+			maven { url "https://repo.spring.io/release" }
+			maven { url "https://repo.spring.io/milestone" }
+		}
+	}
+    repositories {
+        jcenter()
+        maven { url "https://repo.spring.io/release" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
     project.version = scmVersion.version
 }
 
