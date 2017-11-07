@@ -12,7 +12,7 @@ plugins {
     id 'maven'
     id 'maven-publish'
     id 'eclipse'
-    id "com.jfrog.bintray" version '1.7.3'
+    id "com.jfrog.bintray" version '1.8.0'
 }
 
 apply plugin: 'org.springframework.boot'
