@@ -1,5 +1,8 @@
 package com.epages.wiremock.starter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix="wiremock")
@@ -19,6 +22,8 @@ public class WireMockProperties {
 	 * Enables the integration of WireMock in your tests.
 	 */
 	private boolean enabled;
+
+	private List<String> extensions = new ArrayList<>();
 
 	public int getPort() {
 		return port;
@@ -44,5 +49,12 @@ public class WireMockProperties {
 		this.enabled = enabled;
 	}
 
-	
+
+	public List<String> getExtensions() {
+		return extensions;
+	}
+
+	public void setExtensions(List<String> extensions) {
+		this.extensions = extensions;
+	}
 }
