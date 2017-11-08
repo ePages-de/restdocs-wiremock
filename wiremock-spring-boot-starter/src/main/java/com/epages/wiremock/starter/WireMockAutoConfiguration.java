@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.common.ClasspathFileSource;
+import com.github.tomakehurst.wiremock.common.SingleRootFileSource;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 
 @Configuration
@@ -25,15 +26,26 @@ public class WireMockAutoConfiguration {
 	@ConditionalOnMissingBean
 	public WireMockConfiguration wireMockConfiguration(WireMockProperties properties) {
 		WireMockConfiguration config = WireMockConfiguration.options();
-		if(properties.getPort() > 0) {
+
+		if (properties.getPort() > 0) {
 			log.info("Starting WireMock on port " + properties.getPort());
 			config.port(properties.getPort());
 		} else {
 			log.info("Starting WireMock on dynamic port");
 			config.dynamicPort();
 		}
-		if(properties.getStubPath() != null) {
-			config.fileSource(new ClasspathFileSource(properties.getStubPath()));
+		if (properties.getStubPath() != null) {
+			final ClasspathFileSource classpathFileSource = new ClasspathFileSource(properties.getStubPath());
+			if (classpathFileSource.exists()) {
+				config.fileSource(classpathFileSource);
+			} else {
+				final SingleRootFileSource fileSource = new SingleRootFileSource(properties.getStubPath());
+				fileSource.child("mappings").createIfNecessary();
+				config.fileSource(fileSource);
+			}
+		}
+		if (!properties.getExtensions().isEmpty()) {
+			config.extensions(properties.getExtensions().toArray(new String[0]));
 		}
 		return config;
 	}

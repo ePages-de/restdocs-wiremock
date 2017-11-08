@@ -5,4 +5,5 @@
 .settings/
 build/
 bin/
+out/
 gradle.properties
