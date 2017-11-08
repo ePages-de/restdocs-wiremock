@@ -36,6 +36,10 @@ tasks.coveralls {
     dependsOn 'check'
 }
 
+tasks.publish {
+    dependsOn 'bintrayUpload'
+}
+
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
 }
