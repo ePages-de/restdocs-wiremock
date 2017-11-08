@@ -12,10 +12,11 @@ plugins {
     id 'maven'
     id 'maven-publish'
     id 'eclipse'
-    id "com.jfrog.bintray" version '1.8.0'
 }
 
 apply plugin: 'org.springframework.boot'
+
+apply plugin: 'com.jfrog.bintray'
 
 repositories {
     jcenter()
@@ -32,10 +33,6 @@ dependencies {
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
     compile 'com.github.tomakehurst:wiremock-standalone:2.10.1'
     testCompile 'org.springframework:spring-web'
-}
-
-tasks.publish {
-    dependsOn 'bintrayUpload'
 }
 
 task sourceJar(type: Jar) {

@@ -3,9 +3,10 @@ plugins {
     id 'maven'
     id 'maven-publish'
     id 'jacoco'
-    id "com.jfrog.bintray" version '1.8.0'
     id 'com.github.kt3k.coveralls' version '2.8.2'
 }
+
+apply plugin: 'com.jfrog.bintray'
 
 repositories {
     jcenter()
@@ -34,10 +35,6 @@ jacocoTestReport {
 
 tasks.coveralls {
     dependsOn 'check'
-}
-
-tasks.publish {
-    dependsOn 'bintrayUpload'
 }
 
 task sourceJar(type: Jar) {

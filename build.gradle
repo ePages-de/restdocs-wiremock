@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
+    }
+}
+
 plugins {
     id 'pl.allegro.tech.build.axion-release' version '1.8.1'
     id 'com.github.ben-manes.versions' version '0.17.0'
@@ -22,3 +31,6 @@ scmVersion {
 allprojects {
     project.version = scmVersion.version
 }
+
+publish.dependsOn(':restdocs-wiremock:bintrayUpload')
+publish.dependsOn(':wiremock-spring-boot-starter:bintrayUpload')
