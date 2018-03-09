@@ -53,6 +53,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -219,7 +220,7 @@ public class ApiDocumentation {
 			.andReturn().getResponse().getHeader("Location");
 		
 		this.mockMvc
-			.perform(get(noteLocation))
+				.perform(RestDocumentationRequestBuilders.get("/notes/{id}", noteLocation.substring(noteLocation.lastIndexOf("/") + 1)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("title", is(note.get("title"))))
 			.andExpect(jsonPath("body", is(note.get("body"))))
@@ -338,7 +339,7 @@ public class ApiDocumentation {
 			.andReturn().getResponse().getHeader("Location");
 
 		this.mockMvc
-			.perform(get(tagLocation))
+			.perform(RestDocumentationRequestBuilders.get("/tags/{id}", tagLocation.substring(tagLocation.lastIndexOf("/") + 1)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("name", is(tag.get("name"))))
 			.andDo(this.documentationHandler.document(

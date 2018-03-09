@@ -1,5 +1,7 @@
 package com.epages.restdocs;
 
+import static org.springframework.restdocs.generate.RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
@@ -17,6 +19,9 @@ import org.springframework.restdocs.snippet.Snippet;
 import org.springframework.restdocs.snippet.StandardWriterResolver;
 import org.springframework.restdocs.snippet.WriterResolver;
 import org.springframework.restdocs.templates.TemplateFormat;
+import org.springframework.util.StringUtils;
+import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.util.UriTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,8 +66,9 @@ final class WireMockJsonSnippet implements Snippet {
 		OperationResponse response = operation.getResponse();
 
 		Maps.Builder<Object, Object> requestBuilder = Maps.builder()
-				.put("method", operation.getRequest().getMethod())
-				.put("urlPath", operation.getRequest().getUri().getRawPath());
+				.put("method", operation.getRequest().getMethod());
+
+		urlPathOrUrlPattern(operation, requestBuilder);
 
 		Maps.Builder<Object, Object> responseBuilder = Maps.builder()
 				.put("status", response.getStatus().value()).put("headers", responseHeaders(response))
@@ -80,6 +86,32 @@ final class WireMockJsonSnippet implements Snippet {
 
 		return Maps.builder().put("request", requestBuilder.build()).put("response", responseBuilder.build())
 				.build();
+	}
+
+	/**
+	 * If ATTRIBUTE_NAME_URL_TEMPLATE is present use it to build a urlPattern instead of a urlPath.
+	 *
+	 * This allows for more flexible request matching when the path contains variable elements.
+	 *
+	 * ATTRIBUTE_NAME_URL_TEMPLATE is present if the urlTemplate factore methods of RestDocumentationRequestBuilders are used.
+	 *
+	 * @param operation
+	 * @param requestBuilder
+	 */
+	private void urlPathOrUrlPattern(Operation operation, Maps.Builder<Object, Object> requestBuilder) {
+		String urlTemplate = (String) operation.getAttributes().get(ATTRIBUTE_NAME_URL_TEMPLATE);
+		if (StringUtils.isEmpty(urlTemplate)) {
+			requestBuilder.put("urlPath", operation.getRequest().getUri().getRawPath());
+		} else {
+			UriTemplate uriTemplate = new UriTemplate(urlTemplate);
+			UriComponentsBuilder uriTemplateBuilder = UriComponentsBuilder.fromUriString(urlTemplate);
+			Maps.Builder<String, String> uriVariables = Maps.builder();
+			for (String variableName : uriTemplate.getVariableNames()) {
+				uriVariables.put(variableName, "[^/]+");
+			}
+			String uriPathRegex = uriTemplateBuilder.buildAndExpand(uriVariables.build()).getPath();
+			requestBuilder.put("urlPattern", uriPathRegex);
+		}
 	}
 
 	private Map<Object, Object> responseHeaders(OperationResponse response) {

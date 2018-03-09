@@ -8,6 +8,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.restdocs.generate.RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE;
+import static uk.co.datumedge.hamcrest.json.SameJSONAs.sameJSONAs;
 
 import java.io.IOException;
 import java.net.URI;
@@ -35,8 +37,6 @@ import org.springframework.restdocs.test.OperationBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-
-import uk.co.datumedge.hamcrest.json.SameJSONAs;
 
 public class WireMockJsonSnippetTest {
 
@@ -76,8 +76,8 @@ public class WireMockJsonSnippetTest {
 	@Test
 	public void simpleRequest() throws IOException {
 		this.expectedSnippet.expectWireMockJson("simple-request").withContents(
-				(Matcher<String>) SameJSONAs
-						.sameJSONAs(new ObjectMapper().writeValueAsString(expectedJsonForSimpleRequest())));
+				(Matcher<String>)
+						sameJSONAs(new ObjectMapper().writeValueAsString(expectedJsonForSimpleRequest())));
 		wiremockJson().document(operationBuilder("simple-request").request("http://localhost/").method("GET").build());
 	}
 
@@ -91,9 +91,29 @@ public class WireMockJsonSnippetTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
+	public void simpleRequestWithUriTemplate() throws IOException {
+		this.expectedSnippet.expectWireMockJson("simple-request").withContents(
+				(Matcher<String>)
+						sameJSONAs(new ObjectMapper().writeValueAsString(expectedJsonForSimpleRequestWithUrlPattern())));
+		wiremockJson().document(operationBuilder("simple-request")
+				.attribute(ATTRIBUTE_NAME_URL_TEMPLATE, "http://localhost/some/{id}/other")
+				.request("http://localhost/some/123-qbc/other")
+				.method("GET").build());
+	}
+
+	private ImmutableMap<String, ImmutableMap<String, ? extends Object>> expectedJsonForSimpleRequestWithUrlPattern() {
+		return of( //
+				"request", //
+				of("method", "GET", "urlPattern", "/some/[^/]+/other"), //
+				"response", //
+				of("headers", emptyMap(), "body", "", "status", 200));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
 	public void getRequestWithParams() throws IOException {
 		this.expectedSnippet.expectWireMockJson("get-request").withContents(
-				(Matcher<String>) SameJSONAs.sameJSONAs(new ObjectMapper().writeValueAsString(
+				(Matcher<String>) sameJSONAs(new ObjectMapper().writeValueAsString(
 						of( //
 								"request", //
 								of("method", "GET", "urlPath", "/foo", "queryParameters", //
@@ -108,8 +128,8 @@ public class WireMockJsonSnippetTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void postRequest() throws IOException {
-		this.expectedSnippet.expectWireMockJson("post-request").withContents((Matcher<String>) SameJSONAs
-				.sameJSONAs(new ObjectMapper().writeValueAsString(
+		this.expectedSnippet.expectWireMockJson("post-request").withContents((Matcher<String>)
+				sameJSONAs(new ObjectMapper().writeValueAsString(
 						of( //
 						"request", //
 						of("method", "POST", "urlPath", "/", "headers", of("Content-Type", of("contains", "uri-list"))), //
@@ -126,8 +146,8 @@ public class WireMockJsonSnippetTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void customMediaType() throws IOException {
-		this.expectedSnippet.expectWireMockJson("custom-mediatype").withContents((Matcher<String>) SameJSONAs
-				.sameJSONAs(new ObjectMapper().writeValueAsString(
+		this.expectedSnippet.expectWireMockJson("custom-mediatype").withContents((Matcher<String>)
+				sameJSONAs(new ObjectMapper().writeValueAsString(
 						of( //
 								"request", //
 								of("method", "GET", "urlPath", "/foo", 

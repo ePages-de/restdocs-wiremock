@@ -4,5 +4,6 @@
 !.travis.yml
 .settings/
 build/
+out/
 bin/
 gradle.properties
