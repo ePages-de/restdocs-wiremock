@@ -181,18 +181,6 @@ public class GettingStartedDocumentation {
 				.andExpect(status().isNoContent());
 	}
 
-	MvcResult getTaggedExistingNote(String noteLocation) throws Exception {
-		return this.mockMvc.perform(get(noteLocation))
-			.andExpect(status().isOk())
-			.andReturn();
-	}
-
-	void getTagsForExistingNote(String noteTagsLocation) throws Exception {
-		this.mockMvc.perform(get(noteTagsLocation))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("_embedded.tags", hasSize(1)));
-	}
-
 	private String getLink(MvcResult result, String rel)
 			throws UnsupportedEncodingException {
 		return JsonPath.parse(result.getResponse().getContentAsString()).read(
