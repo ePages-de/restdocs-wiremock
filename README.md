@@ -14,6 +14,21 @@ artifact repository for this purpose.
 
 Details and background information can be read on our [ePages Developer Blog](https://developer.epages.com/blog/2016/07/14/wiremock.html).
 
+<!-- TOC depthFrom:2 -->
+
+- [Contents](#contents)
+- [How to include `restdocs-wiremock` into your server project](#how-to-include-restdocs-wiremock-into-your-server-project)
+    - [Dependencies](#dependencies)
+    - [Producing snippets](#producing-snippets)
+    - [The WireMock stubs jar](#the-wiremock-stubs-jar)
+- [How to use WireMock in your client tests](#how-to-use-wiremock-in-your-client-tests)
+    - [Dependencies](#dependencies-1)
+    - [Configuring your test to use the WireMock stubs](#configuring-your-test-to-use-the-wiremock-stubs)
+- [Building from source](#building-from-source)
+- [Publishing](#publishing)
+- [Other resources](#other-resources)
+
+<!-- /TOC -->
 ## Contents
 
 This repository consists of four projects
@@ -84,7 +99,7 @@ to the `document()` calls for Spring REST Docs. For example:
 
 ```java
 @RunWith(SpringJUnit4ClassRunner.class)
-...
+//...
 class ApiDocumentation {
     // ... the usual test setup.
     void testGetSingleNote() {
@@ -114,6 +129,42 @@ the response body as provided by the integration test.
       "Content-Length" : [ "344" ]
     },
     "body" : "{\n  \"title\" : \"REST maturity model\",\n  \"body\" : \"http://martinfowler.com/articles/richardsonMaturityModel.html\",\n  \"_links\" : {\n    \"self\" : {\n      \"href\" : \"http://localhost:8080/notes/1\"\n    },\n    \"note\" : {\n      \"href\" : \"http://localhost:8080/notes/1\"\n    },\n    \"tags\" : {\n      \"href\" : \"http://localhost:8080/notes/1/tags\"\n    }\n  }\n}"
+  }
+}
+```
+
+The above snippet has a shortcoming. WireMock will only match a request if the url matches the complete path, including the id.
+This is really inflexible.
+We can do better by using `RestDocumentationRequestBuilders` to construct the request using a url template, instead of `MockMvcRequestBuilders`.
+
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+//...
+class ApiDocumentation {
+    // ... the usual test setup.
+    void testGetSingleNote() {
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get("/notes/{id}", 1)
+          .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(document("get-note",
+          wiremockJson(),
+          responseFields( ... )
+        ));
+    }
+}
+```
+
+This generates a snippet that uses `urlPattern` instead if `urlPath`. 
+So WireMock would match a request with any id value.
+
+```json
+{
+  "request" : {
+    "method" : "GET",
+    "urlPattern" : "/notes/[^/]+"
+  },
+  "response" : {
+    //...
   }
 }
 ```
