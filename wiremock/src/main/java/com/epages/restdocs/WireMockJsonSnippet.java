@@ -1,9 +1,11 @@
 package com.epages.restdocs;
 
+import static java.util.Collections.singletonList;
 import static org.springframework.restdocs.generate.RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +46,10 @@ final class WireMockJsonSnippet implements Snippet {
 		}
 	};
 
-	WireMockJsonSnippet() {
+	private List<ResponseFieldTemplateDescriptor> responseFieldTemplateDescriptors;
+
+	WireMockJsonSnippet(ResponseFieldTemplateDescriptor[] responseFieldTemplateDescriptors) {
+		this.responseFieldTemplateDescriptors = Arrays.asList(responseFieldTemplateDescriptors);
 	}
 
 	@Override
@@ -72,7 +77,11 @@ final class WireMockJsonSnippet implements Snippet {
 
 		Maps.Builder<Object, Object> responseBuilder = Maps.builder()
 				.put("status", response.getStatus().value()).put("headers", responseHeaders(response))
-				.put("body", responseBody(response));
+				.put("body", responseBody(operation));
+
+		if (!responseFieldTemplateDescriptors.isEmpty()) {
+			responseBuilder.put("transformers", singletonList("response-template"));
+		}
 
 		Map<Object, Object> queryParams = queryParams(operation);
 		if (!queryParams.isEmpty()) {
@@ -140,8 +149,13 @@ final class WireMockJsonSnippet implements Snippet {
 		return queryParams.build();
 	}
 
-	private String responseBody(OperationResponse response) {
-		return response.getContentAsString();
+	private String responseBody(Operation operation) {
+		OperationResponse response = operation.getResponse();
+		String urlTemplateString = (String) operation.getAttributes().get(ATTRIBUTE_NAME_URL_TEMPLATE);
+
+		return new ResponseTemplateProcessor(responseFieldTemplateDescriptors,
+				urlTemplateString != null ? new UriTemplate(urlTemplateString) : null,
+				response.getContentAsString()).replaceTemplateFields();
 	}
 
 	private Map<Object, Object> requestHeaders(OperationRequest request) {

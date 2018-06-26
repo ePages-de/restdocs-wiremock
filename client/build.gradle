@@ -3,13 +3,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.0.2.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE'
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
 apply plugin: 'eclipse'
 
 repositories {
@@ -27,9 +26,10 @@ dependencies {
     testCompile project(':wiremock-spring-boot-starter')
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 group = 'com.epages'
 
 assemble.dependsOn(':restdocs-server:publishToMavenLocal')
 compileJava.dependsOn(':restdocs-server:publishToMavenLocal')
+compileJava.dependsOn(':wiremock-spring-boot-starter:publishToMavenLocal')

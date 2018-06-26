@@ -74,7 +74,7 @@ public class TagsController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	void delete(@PathVariable("id") long id) {
-		this.repository.deleteById(id);
+		this.repository.delete(id);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

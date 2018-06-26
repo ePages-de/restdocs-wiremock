@@ -16,7 +16,9 @@
 
 package com.example.notes;
 
+import static com.epages.restdocs.WireMockDocumentation.idFieldReplacedWithPathParameterValue;
 import static com.epages.restdocs.WireMockDocumentation.wiremockJson;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -34,8 +36,8 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -54,7 +56,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -145,7 +146,7 @@ public class ApiDocumentation {
 					linkWithRel("notes").description("The <<resources-notes,Notes resource>>"),
 					linkWithRel("tags").description("The <<resources-tags,Tags resource>>")),
 				responseFields(
-						subsectionWithPath("_links").description("<<resources-index-links,Links>> to other resources"))));
+						fieldWithPath("_links").description("<<resources-index-links,Links>> to other resources"))));
 	}
 
 	@Test
@@ -161,7 +162,7 @@ public class ApiDocumentation {
 			.andExpect(status().isOk())
 			.andDo(this.documentationHandler.document(
 				responseFields(
-						subsectionWithPath("_embedded.notes").description("An array of <<resources-note, Note resources>>"))));
+						fieldWithPath("_embedded.notes").description("An array of <<resources-note, Note resources>>"))));
 	}
 
 	@Test
@@ -211,7 +212,7 @@ public class ApiDocumentation {
 		Map<String, Object> note = new HashMap<String, Object>();
 		note.put("title", "REST maturity model");
 		note.put("body", "http://martinfowler.com/articles/richardsonMaturityModel.html");
-		note.put("tags", Arrays.asList(tagLocation));
+		note.put("tags", singletonList(tagLocation));
 
 		String noteLocation = this.mockMvc
 			.perform(post("/notes")
@@ -221,20 +222,23 @@ public class ApiDocumentation {
 			.andReturn().getResponse().getHeader("Location");
 		
 		this.mockMvc
-				.perform(RestDocumentationRequestBuilders.get("/notes/{id}", noteLocation.substring(noteLocation.lastIndexOf("/") + 1)))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("title", is(note.get("title"))))
-			.andExpect(jsonPath("body", is(note.get("body"))))
-			.andExpect(jsonPath("_links.self.href", is(noteLocation)))
-			.andExpect(jsonPath("_links.note-tags", is(notNullValue())))
-			.andDo(this.documentationHandler.document(
-				links(
-					linkWithRel("self").description("This <<resources-note,note>>"),
-					linkWithRel("note-tags").description("This note's <<resources-note-tags,tags>>")),
-				responseFields(
-					fieldWithPath("title").description("The title of the note"),
-					fieldWithPath("body").description("The body of the note"),
-					subsectionWithPath("_links").description("<<resources-note-links,Links>> to other resources"))));
+				.perform(get("/notes/{id}", noteLocation.substring(noteLocation.lastIndexOf("/") + 1)))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("title", is(note.get("title"))))
+				.andExpect(jsonPath("body", is(note.get("body"))))
+				.andExpect(jsonPath("_links.self.href", is(noteLocation)))
+				.andExpect(jsonPath("_links.note-tags", is(notNullValue())))
+				.andDo(this.documentationHandler.document(
+						wiremockJson(idFieldReplacedWithPathParameterValue()),
+						links(
+								linkWithRel("self").description("This <<resources-note,note>>"),
+								linkWithRel("note-tags").description("This note's <<resources-note-tags,tags>>")),
+						responseFields(
+								fieldWithPath("id").description("The note id"),
+								fieldWithPath("title").description("The title of the note"),
+								fieldWithPath("body").description("The body of the note"),
+								fieldWithPath("_links").description("<<resources-note-links,Links>> to other resources"))));
 
 	}
 
@@ -252,7 +256,7 @@ public class ApiDocumentation {
 			.andExpect(status().isOk())
 				.andDo(this.documentationHandler.document(
 						responseFields(
-								subsectionWithPath("_embedded.tags").description("An array of <<resources-tag,Tag resources>>"))));
+								fieldWithPath("_embedded.tags").description("An array of <<resources-tag,Tag resources>>"))));
 	}
 
 	@Test
@@ -340,7 +344,7 @@ public class ApiDocumentation {
 			.andReturn().getResponse().getHeader("Location");
 
 		this.mockMvc
-			.perform(RestDocumentationRequestBuilders.get("/tags/{id}", tagLocation.substring(tagLocation.lastIndexOf("/") + 1)))
+			.perform(get("/tags/{id}", tagLocation.substring(tagLocation.lastIndexOf("/") + 1)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("name", is(tag.get("name"))))
 			.andDo(this.documentationHandler.document(
@@ -349,7 +353,7 @@ public class ApiDocumentation {
 					linkWithRel("tagged-notes").description("The <<resources-tagged-notes,notes>> that have this tag")),
 					responseFields(
 							fieldWithPath("name").description("The name of the tag"),
-							subsectionWithPath("_links").description("<<resources-tag-links,Links>> to other resources"))));
+							fieldWithPath("_links").description("<<resources-tag-links,Links>> to other resources"))));
 	}
 
 	@Test

@@ -17,6 +17,7 @@
 package com.example.notes;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class Note {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private UUID id;
 
 	private String title;
 
@@ -40,12 +41,11 @@ public class Note {
 	@ManyToMany
 	private List<Tag> tags;
 
-	@JsonIgnore
-	public long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

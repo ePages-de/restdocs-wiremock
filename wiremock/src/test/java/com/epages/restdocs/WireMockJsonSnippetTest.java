@@ -1,8 +1,10 @@
 package com.epages.restdocs;
 
+import static com.epages.restdocs.WireMockDocumentation.templatedResponseField;
 import static com.epages.restdocs.WireMockDocumentation.wiremockJson;
 import static com.google.common.collect.ImmutableMap.of;
 import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -107,6 +109,36 @@ public class WireMockJsonSnippetTest {
 				of("method", "GET", "urlPattern", "/some/[^/]+/other"), //
 				"response", //
 				of("headers", emptyMap(), "body", "", "status", 200));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void simpleRequestWithUriTemplateAndResponseTemplate() throws IOException {
+		this.expectedSnippet.expectWireMockJson("simple-request")
+				.withContents((Matcher<String>) sameJSONAs(
+						new ObjectMapper().writeValueAsString(expectedJsonForSimpleRequestWithUrlPatternAndResponseTemplate())));
+
+		OperationBuilder operationBuilder = operationBuilder("simple-request")
+				.attribute(ATTRIBUTE_NAME_URL_TEMPLATE, "http://localhost/some/{id}/other");
+		operationBuilder.request("http://localhost/some/123-qbc/other")
+				.method("GET").build();
+		operationBuilder.response().status(200).content("{\"name\": \"some\"}");
+		wiremockJson(templatedResponseField("name").replacedWithUriTemplateVariableValue("id"))
+				.document(operationBuilder.build());
+	}
+
+	private ImmutableMap<String, ?> expectedJsonForSimpleRequestWithUrlPatternAndResponseTemplate() {
+		return of(
+				"request", of(
+						"method", "GET",
+						"urlPattern", "/some/[^/]+/other"
+				),
+				"response", of(
+						"headers", of("Content-Length", "16"),
+						"body", "{\"name\":\"{{request.requestLine.pathSegments.[1]}}\"}",
+						"transformers", singletonList("response-template"),
+						"status", 200)
+				);
 	}
 
 	@SuppressWarnings("unchecked")
