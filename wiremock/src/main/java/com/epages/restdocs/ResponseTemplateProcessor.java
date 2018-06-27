@@ -1,12 +1,11 @@
 package com.epages.restdocs;
 
-import java.util.List;
-
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UriTemplate;
 
-import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
+import java.util.List;
 
 class ResponseTemplateProcessor {
 
@@ -31,7 +30,7 @@ class ResponseTemplateProcessor {
             String expression = null;
             if (uriTemplate != null && !uriTemplate.getVariableNames().isEmpty()) {
                 expression = preProcessUriTemplateVariableNameExpression(descriptor);
-            } else if (descriptor.getUriTemplateVariableName() != null){
+            } else if (descriptor.getUriTemplateVariableName() != null) {
                 throw new IllegalArgumentException("Descriptor for field '" + descriptor.getPath() + "' specifies a 'replacedWithUriTemplateVariableValue' but no URI Template could be found in. " +
                         "Make sure to construct your request with the methods in org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders that use URI templates");
             }
