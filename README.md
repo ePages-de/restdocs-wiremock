@@ -14,7 +14,7 @@ artifact repository for this purpose.
 
 Details and background information can be read on our [ePages Developer Blog](https://developer.epages.com/blog/2016/07/14/wiremock.html).
 
-<!-- TOC depthFrom:2 -->
+<!-- TOC depthFrom:2 depthTo:3 -->
 
 - [Contents](#contents)
 - [How to include `restdocs-wiremock` into your server project](#how-to-include-restdocs-wiremock-into-your-server-project)
@@ -91,8 +91,7 @@ When using maven:
 
 ### Producing snippets
 
-During REST Docs run, snippets like the one below are generated and put into a dedicated jar file, which you can
-publish into your artifact repository. 
+During REST Docs run, snippets like the one below are generated and put into a dedicated jar file, which you can publish into your artifact repository. 
 
 Integration into your test code is as simple as adding `wiremockJson()` from `com.epages.restdocs.WireMockDocumentation`
 to the `document()` calls for Spring REST Docs. For example:
@@ -133,6 +132,8 @@ the response body as provided by the integration test.
 }
 ```
 
+#### More flexible request matching using `urlPattern`
+
 The above snippet has a shortcoming. WireMock will only match a request if the url matches the complete path, including the id.
 This is really inflexible.
 We can do better by using `RestDocumentationRequestBuilders` to construct the request using a url template, instead of `MockMvcRequestBuilders`.
@@ -167,6 +168,61 @@ So WireMock would match a request with any id value.
     //...
   }
 }
+```
+
+#### Response Templating
+
+WireMock stubs with static responses are too inflexible in many use cases. That is why WireMock offers [Response Templating](http://wiremock.org/docs/response-templating/). Response Templating allows us to make our responses more dynamic by using expressions instead of static values.
+
+`restdocs-wiremock` allows us to use response template expressions:
+
+```java
+this.mockMvc.perform(get("/notes/{id}", id))
+  .andDo(document("get-note",
+    wiremockJson(idFieldReplacedWithPathParameterValue()),
+    //..
+));
+```
+
+`idFieldReplacedWithPathParameterValue()` is a convenience method offered by `WireMockDocumentation` for the common use case to replace the `id` field in a response with the value of the second path segment.
+
+The following variant would give the same result:
+
+```java
+wiremockJson(templatedResponseField("id").replacedWithWireMockTemplateExpression("request.requestLine.pathSegments.[1]"));
+```
+
+We can also address the path parameter by the URI template name.:
+```java
+wiremockJson(templatedResponseField("id").replacedWithUriTemplateVariableValue("id");)
+```
+
+The resulting stub contains the expression and WireMock will replace the `id` field with the value of the path segment when serving a response based on this stub.
+
+```json
+{
+  "request" : {
+    "method" : "GET",
+    "urlPattern" : "/notes/[^/]+"
+  },
+  "response" : {
+    "transformers" : [ "response-template" ],
+    "body" : "{\"id\":\"{{request.requestLine.pathSegments.[1]}}\",\"title\":\"REST maturity model\"}",
+    "status" : 200
+  }
+}
+```
+
+WireMock also offers expressions to generate random values.
+
+```java
+wiremockJson(templatedResponseField("id").replacedWithWireMockTemplateExpression("randomValue length=33 type='ALPHANUMERIC'")
+```
+
+Also replacing date values often comes in handy:
+
+```java
+wiremockJson(templatedResponseField("date").replacedWithWireMockTemplateExpression("now")
 ```
 
 ### The WireMock stubs jar

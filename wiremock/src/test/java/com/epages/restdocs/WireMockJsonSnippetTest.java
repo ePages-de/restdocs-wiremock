@@ -1,5 +1,6 @@
 package com.epages.restdocs;
 
+import static com.epages.restdocs.WireMockDocumentation.idFieldReplacedWithPathParameterValue;
 import static com.epages.restdocs.WireMockDocumentation.templatedResponseField;
 import static com.epages.restdocs.WireMockDocumentation.wiremockJson;
 import static com.google.common.collect.ImmutableMap.of;
@@ -122,8 +123,24 @@ public class WireMockJsonSnippetTest {
 				.attribute(ATTRIBUTE_NAME_URL_TEMPLATE, "http://localhost/some/{id}/other");
 		operationBuilder.request("http://localhost/some/123-qbc/other")
 				.method("GET").build();
-		operationBuilder.response().status(200).content("{\"name\": \"some\"}");
-		wiremockJson(templatedResponseField("name").replacedWithUriTemplateVariableValue("id"))
+		operationBuilder.response().status(200).content("{\"id\": \"some\"}");
+		wiremockJson(templatedResponseField("id").replacedWithUriTemplateVariableValue("id"))
+				.document(operationBuilder.build());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void simpleRequestWithUriTemplateAndResponseTemplate1() throws IOException {
+		this.expectedSnippet.expectWireMockJson("simple-request")
+				.withContents((Matcher<String>) sameJSONAs(
+						new ObjectMapper().writeValueAsString(expectedJsonForSimpleRequestWithUrlPatternAndResponseTemplate())));
+
+		OperationBuilder operationBuilder = operationBuilder("simple-request")
+				.attribute(ATTRIBUTE_NAME_URL_TEMPLATE, "http://localhost/some/{id}/other");
+		operationBuilder.request("http://localhost/some/123-qbc/other")
+				.method("GET").build();
+		operationBuilder.response().status(200).content("{\"id\": \"some\"}");
+		wiremockJson(idFieldReplacedWithPathParameterValue())
 				.document(operationBuilder.build());
 	}
 
@@ -134,8 +151,8 @@ public class WireMockJsonSnippetTest {
 						"urlPattern", "/some/[^/]+/other"
 				),
 				"response", of(
-						"headers", of("Content-Length", "16"),
-						"body", "{\"name\":\"{{request.requestLine.pathSegments.[1]}}\"}",
+						"headers", of("Content-Length", "14"),
+						"body", "{\"id\":\"{{request.requestLine.pathSegments.[1]}}\"}",
 						"transformers", singletonList("response-template"),
 						"status", 200)
 				);
