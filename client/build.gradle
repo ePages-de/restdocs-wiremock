@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.9.RELEASE'
     }
 }
 
@@ -32,3 +32,4 @@ group = 'com.epages'
 
 assemble.dependsOn(':restdocs-server:publishToMavenLocal')
 compileJava.dependsOn(':restdocs-server:publishToMavenLocal')
+compileJava.dependsOn(':wiremock-spring-boot-starter:publishToMavenLocal')

@@ -18,12 +18,11 @@ package com.example.notes;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface NoteRepository extends CrudRepository<Note, Long> {
-
-	Note findById(long id);
+public interface NoteRepository extends CrudRepository<Note, UUID> {
 
 	List<Note> findByTagsIn(Collection<Tag> tags);
 }

@@ -3,6 +3,7 @@ package com.example.client;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -33,8 +34,11 @@ public class NoteServiceTest {
 
 	@Test
 	@WireMockTest(stubPath = "mappings/note-get-example")
-	public void should_1_use_dedicated_wiremock_stub() {
-		assertEquals("REST maturity model", noteService.getNote("6").getTitle());
+	public void should_1_use_dedicated_wiremock_stub_returning_path_id_in_response_body() {
+		UUID id = UUID.randomUUID();
+		final Note note = noteService.getNote(id.toString());
+		assertEquals("REST maturity model", note.getTitle());
+		assertEquals(id, note.getId());
 	}
 
 	@Test(expected = HttpClientErrorException.class)
@@ -45,7 +49,7 @@ public class NoteServiceTest {
 
 	@Test
 	public void should_3_use_default_wiremock_stubs() {
-		assertEquals("REST maturity model", noteService.getNote("6").getTitle());
+		assertEquals("REST maturity model", noteService.getNote(UUID.randomUUID().toString()).getTitle());
 	}
 
 	@Test(expected = HttpClientErrorException.class)

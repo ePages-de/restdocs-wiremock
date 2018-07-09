@@ -21,6 +21,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
@@ -86,24 +87,24 @@ public class NotesController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	void delete(@PathVariable("id") long id) {
+	void delete(@PathVariable("id") UUID id) {
 		this.noteRepository.delete(id);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	Resource<Note> note(@PathVariable("id") long id) {
+	Resource<Note> note(@PathVariable("id") UUID id) {
 		return this.noteResourceAssembler.toResource(findNoteById(id));
 	}
 
 	@RequestMapping(value = "/{id}/tags", method = RequestMethod.GET)
-	ResourceSupport noteTags(@PathVariable("id") long id) {
+	ResourceSupport noteTags(@PathVariable("id") UUID id) {
 		return new NestedContentResource<TagResource>(
 				this.tagResourceAssembler.toResources(findNoteById(id).getTags()));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	void updateNote(@PathVariable("id") long id, @RequestBody NotePatchInput noteInput) {
+	void updateNote(@PathVariable("id") UUID id, @RequestBody NotePatchInput noteInput) {
 		Note note = findNoteById(id);
 		if (noteInput.getTagUris() != null) {
 			note.setTags(getTags(noteInput.getTagUris()));
@@ -117,8 +118,8 @@ public class NotesController {
 		this.noteRepository.save(note);
 	}
 
-	private Note findNoteById(long id) {
-		Note note = this.noteRepository.findById(id);
+	private Note findNoteById(UUID id) {
+		Note note = this.noteRepository.findOne(id);
 		if (note == null) {
 			throw new ResourceDoesNotExistException();
 		}

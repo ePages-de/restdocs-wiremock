@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.9.RELEASE'
     }
 }
 
@@ -31,7 +31,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-test'
     compile 'org.springframework.boot:spring-boot-starter'
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
-    compile 'com.github.tomakehurst:wiremock-standalone:2.10.1'
+    compile 'com.github.tomakehurst:wiremock-standalone:2.18.0'
     testCompile 'org.springframework:spring-web'
 }
 
