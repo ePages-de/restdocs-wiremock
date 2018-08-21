@@ -107,7 +107,7 @@ public class WireMockJsonSnippetTest {
 	private ImmutableMap<String, ImmutableMap<String, ? extends Object>> expectedJsonForSimpleRequestWithUrlPattern() {
 		return of( //
 				"request", //
-				of("method", "GET", "urlPattern", "/some/[^/]+/other"), //
+				of("method", "GET", "urlPathPattern", "/some/[^/]+/other"), //
 				"response", //
 				of("headers", emptyMap(), "body", "", "status", 200));
 	}
@@ -148,7 +148,7 @@ public class WireMockJsonSnippetTest {
 		return of(
 				"request", of(
 						"method", "GET",
-						"urlPattern", "/some/[^/]+/other"
+						"urlPathPattern", "/some/[^/]+/other"
 				),
 				"response", of(
 						"headers", of("Content-Length", "14"),

@@ -132,7 +132,7 @@ the response body as provided by the integration test.
 }
 ```
 
-#### More flexible request matching using `urlPattern`
+#### More flexible request matching using `urlPathPattern`
 
 The above snippet has a shortcoming. WireMock will only match a request if the url matches the complete path, including the id.
 This is really inflexible.
@@ -155,14 +155,14 @@ class ApiDocumentation {
 }
 ```
 
-This generates a snippet that uses `urlPattern` instead if `urlPath`. 
+This generates a snippet that uses `urlPathPattern` instead if `urlPath`. 
 So WireMock would match a request with any id value.
 
 ```json
 {
   "request" : {
     "method" : "GET",
-    "urlPattern" : "/notes/[^/]+"
+    "urlPathPattern" : "/notes/[^/]+"
   },
   "response" : {
     //...

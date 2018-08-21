@@ -1,21 +1,10 @@
 package com.epages.restdocs;
 
-import static java.util.Collections.singletonList;
-import static org.springframework.restdocs.generate.RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.restdocs.RestDocumentationContext;
-import org.springframework.restdocs.operation.Operation;
-import org.springframework.restdocs.operation.OperationRequest;
-import org.springframework.restdocs.operation.OperationResponse;
-import org.springframework.restdocs.operation.Parameters;
-import org.springframework.restdocs.operation.QueryStringParser;
+import org.springframework.restdocs.operation.*;
 import org.springframework.restdocs.snippet.RestDocumentationContextPlaceholderResolverFactory;
 import org.springframework.restdocs.snippet.Snippet;
 import org.springframework.restdocs.snippet.StandardWriterResolver;
@@ -25,9 +14,15 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UriTemplate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.singletonList;
+import static org.springframework.restdocs.generate.RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE;
 
 final class WireMockJsonSnippet implements Snippet {
 
@@ -119,7 +114,7 @@ final class WireMockJsonSnippet implements Snippet {
 				uriVariables.put(variableName, "[^/]+");
 			}
 			String uriPathRegex = uriTemplateBuilder.buildAndExpand(uriVariables.build()).getPath();
-			requestBuilder.put("urlPattern", uriPathRegex);
+			requestBuilder.put("urlPathPattern", uriPathRegex);
 		}
 	}
 
