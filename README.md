@@ -8,7 +8,7 @@
 This is a plugin for auto-generating [WireMock](http://wiremock.org/) stubs
 as part of documenting your REST API with [Spring REST Docs](http://projects.spring.io/spring-restdocs/).
 
-The basic idea is to use the requests and responses from the integration tests as stubs for testing your client's 
+The basic idea is to use the requests and responses from the integration tests as stubs for testing your client's
 API contract. The mock templates can be packaged as jar files and be published into your company's
 artifact repository for this purpose.
 
@@ -91,7 +91,7 @@ When using maven:
 
 ### Producing snippets
 
-During REST Docs run, snippets like the one below are generated and put into a dedicated jar file, which you can publish into your artifact repository. 
+During REST Docs run, snippets like the one below are generated and put into a dedicated jar file, which you can publish into your artifact repository.
 
 Integration into your test code is as simple as adding `wiremockJson()` from `com.epages.restdocs.WireMockDocumentation`
 to the `document()` calls for Spring REST Docs. For example:
@@ -155,7 +155,7 @@ class ApiDocumentation {
 }
 ```
 
-This generates a snippet that uses `urlPathPattern` instead if `urlPath`. 
+This generates a snippet that uses `urlPathPattern` instead if `urlPath`.
 So WireMock would match a request with any id value.
 
 ```json
@@ -250,7 +250,7 @@ that, the JSON files can be accessed as classpath resources.
 
 ```groovy
 testRuntime (group:'com.epages', name:'restdocs-server', version:'0.7.27', classifier:'wiremock', ext:'jar')
-``` 
+```
 
 ## How to use WireMock in your client tests
 
@@ -281,8 +281,8 @@ When using maven, add the following dependency in test scope.
 </dependency>
 ```
 
-*Important note for Spring Cloud users*: The BOM produced by Spring Cloud includes a transitive resolution of WireMock 
-version 1.55, (via `spring-cloud-aws` -> `aws-java-sdk-core` -> `wiremock (test)`). As versions from BOM always override 
+*Important note for Spring Cloud users*: The BOM produced by Spring Cloud includes a transitive resolution of WireMock
+version 1.55, (via `spring-cloud-aws` -> `aws-java-sdk-core` -> `wiremock (test)`). As versions from BOM always override
 transitive versions coming in through maven dependencies, you need to add an explicit dependency on WireMock 2.x to your
 project, like shown in the following gradle example:
 
@@ -298,7 +298,7 @@ Here is an excerpt of the sample test from the restdocs-client project to illust
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { ClientApplication.class })
 @ActiveProfiles("test") // (1)
-@WireMockTest(stubPath = "wiremock/restdocs-server") // (2) 
+@WireMockTest(stubPath = "wiremock/restdocs-server") // (2)
 public class NoteServiceTest {
 
     @Autowired
@@ -342,15 +342,15 @@ Please execute at least step 1 + 2 if before importing restdocs-wiremock into yo
   ./gradlew restdocs-wiremock:build restdocs-wiremock:publishToMavenLocal
   ```
 
-2.  Run the server tests, which uses the WireMock integration into Spring REST Docs. 
+2.  Run the server tests, which uses the WireMock integration into Spring REST Docs.
     As a result, there is a `restdocs-server-wiremock` jar file in your local maven repository.
-    Mind that this jar only contains a set of json files without explicit dependency on WireMock itself. 
+    Mind that this jar only contains a set of json files without explicit dependency on WireMock itself.
 
   ```shell
   ./gradlew restdocs-server:build restdocs-server:publishToMavenLocal
   ```
 
-3. Run the client tests, that expect a specific API from the server. 
+3. Run the client tests, that expect a specific API from the server.
    By mocking a server via WireMock the client can be tested in isolation, but would notice a breaking change.
 
   ```shell
@@ -359,17 +359,42 @@ Please execute at least step 1 + 2 if before importing restdocs-wiremock into yo
 
 ## Publishing
 
-This project makes use of the [axion-release-plugin](https://github.com/allegro/axion-release-plugin)
-and publishing is automated in travis, when a new release is tagged in git.
-
-Locally you should be able to create a new release by running the `release` task on gradle. A successful
-travis build of this tag should finally end up on [bintray](https://bintray.com/epages/maven/restdocs-wiremock/).
+Given that the `master` branch on the upstream repository is in the state from which you want to create a release, execute the following steps:
 
 ```shell
-./gradlew clean build release
+git checkout master
+git fetch upstream
+git reset --hard upstream/master
+
+# Print current version to the terminal
+./gradlew currentVersion
+
+# (a) Release new patch version
+./gradlew release -Prelease.versionIncrementer=incrementPatch
+
+# (b) Release new minor version
+./gradlew release -Prelease.versionIncrementer=incrementMajor
+
+## (c) Release new major version
+./gradlew release -Prelease.versionIncrementer=incrementMajor
+
+# Print current version to the terminal
+./gradlew currentVersion
+
+# Push the tag to the upstream repository
+CURRENT_VERSION_TAG=X.X.X
+git push upstream $CURRENT_VERSION_TAG
 ```
+
+TravisCI will then take care to call the Gradle tasks which upload the release to Sonatype.
+A new staging repository will be create at [oss.sonatype.org](https://oss.sonatype.org/#stagingRepositories).
+You need to login there, go to the latest staging repository, and then close and release the repository in the Sonatype UI.
+
+(Once this process is working reliably we can also automate the final manual steps.)
 
 ## Other resources
 
-- A similar approach is taken by [Spring Cloud Contract](https://cloud.spring.io/spring-cloud-contract/)
+- [gradle-nexus/publish-plugin](https://github.com/gradle-nexus/publish-plugin)
+- [allegro/axion-release-plugin](https://github.com/allegro/axion-release-plugin)
 
+- A similar approach is taken by [Spring Cloud Contract](https://cloud.spring.io/spring-cloud-contract/)

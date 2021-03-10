@@ -2,12 +2,10 @@ buildscript {
     repositories {
         jcenter()
     }
-    dependencies {
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
-    }
 }
 
 plugins {
+    id 'io.github.gradle-nexus.publish-plugin' version '1.0.0'
     id 'pl.allegro.tech.build.axion-release' version '1.9.1'
     id 'com.github.ben-manes.versions' version '0.20.0'
     id 'publishing'
@@ -28,9 +26,14 @@ scmVersion {
     }
 }
 
+group = 'com.epages'
+
 allprojects {
     project.version = scmVersion.version
 }
 
-publish.dependsOn(':restdocs-wiremock:bintrayUpload')
-publish.dependsOn(':wiremock-spring-boot-starter:bintrayUpload')
+nexusPublishing {
+    repositories {
+        sonatype ()
+    }
+}

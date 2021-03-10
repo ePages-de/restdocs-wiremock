@@ -16,8 +16,6 @@ plugins {
 
 apply plugin: 'org.springframework.boot'
 
-apply plugin: 'com.jfrog.bintray'
-
 repositories {
     jcenter()
 }
@@ -52,23 +50,5 @@ publishing {
                 classifier 'sources'
             }
         }
-    }
-}
-
-bintray {
-    user = project.findProperty('bintrayUser')   ?: System.getenv('BINTRAY_USER')
-    key  = project.findProperty('bintrayApiKey') ?: System.getenv('BINTRAY_API_KEY')
-    publications = ['mavenJava','sourceJar']
-    publish = true
-    pkg {
-        repo = "maven"
-        name = 'wiremock-spring-boot-starter'
-        userOrg = 'epages'
-        websiteUrl = 'https://github.com/ePages-de/restdocs-wiremock'
-        issueTrackerUrl = 'https://github.com/ePages-de/restdocs-wiremock/issues'
-        vcsUrl = 'https://github.com/ePages-de/restdocs-wiremock.git'
-        githubRepo = 'ePages-de/restdocs-wiremock'
-        githubReleaseNotesFile = 'README.md'
-        licenses = ['Apache-2.0']
     }
 }
