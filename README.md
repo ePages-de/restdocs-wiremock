@@ -363,8 +363,7 @@ Given that the `master` branch on the upstream repository is in the state from w
 
 ```shell
 git checkout master
-git fetch upstream
-git reset --hard upstream/master
+git pull upstream master
 
 # Print current version to the terminal
 ./gradlew currentVersion
@@ -380,10 +379,6 @@ git reset --hard upstream/master
 
 # Print current version to the terminal
 ./gradlew currentVersion
-
-# Push the tag to the upstream repository
-CURRENT_VERSION_TAG=X.X.X
-git push upstream $CURRENT_VERSION_TAG
 ```
 
 TravisCI will then take care to call the Gradle tasks which upload the release to Sonatype.
@@ -395,6 +390,6 @@ You need to login there, go to the latest staging repository, and then close and
 ## Other resources
 
 - [gradle-nexus/publish-plugin](https://github.com/gradle-nexus/publish-plugin)
-- [allegro/axion-release-plugin](https://github.com/allegro/axion-release-plugin)
-
+- [allegro/axion-release-plugin](https://axion-release-plugin.readthedocs.io)
+- [Maven Publish Plugin](https://docs.gradle.org/current/userguide/publishing_maven.html)
 - A similar approach is taken by [Spring Cloud Contract](https://cloud.spring.io/spring-cloud-contract/)
