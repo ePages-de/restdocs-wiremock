@@ -31,30 +31,22 @@ Details and background information can be read on our [ePages Developer Blog](ht
 <!-- /TOC -->
 ## Contents
 
-This repository consists of four projects
+This repository consists of two libraries:
 
 * `restdocs-wiremock`: The library to extend Spring REST Docs with WireMock stub snippet generation.
-* `restdocs-server`: A sample server documenting its REST API (i.e. the Spring REST Docs "notes" example).
-   Besides producing human-readable documentation it will also generate JSON snippets to be used as stubs for WireMock.
 * `wiremock-spring-boot-starter`: A spring boot starter which adds a `WireMockServer` to your client's ApplicationContext for integration testing.
   This is optional, but highly recommended when verifying your client contract in a SpringBootTest.
+
+And two sample projects:
+
+* `restdocs-server`: A sample server documenting its REST API (i.e. the Spring REST Docs "notes" example).
+   Besides producing human-readable documentation it will also generate JSON snippets to be used as stubs for WireMock.
 * `restdocs-client`: A sample client using the server API, with integration testing its client contract against the stubs provided via WireMock.
 
 
 ## How to include `restdocs-wiremock` into your server project
 
 ### Dependencies
-
-This project uses JDK.
-JDK 8 can be installed with [SDKMAN!](https://sdkman.io/).
-
-```
-# (a) not installed, yet
-sdk install java 8.0.282.j9-adpt
-
-# (b) already installed
-sdk use java 8.0.282.j9-adpt
-```
 
 The project is published on `jcenter` from `bintray`, so firstly, you need to add `jcenter` as package
 repository for your project.
@@ -344,6 +336,17 @@ public class MyTest {
 ```
 
 ## Building from source
+
+This project uses JDK 8.
+JDK 8 can be used via [SDKMAN!](https://sdkman.io/).
+
+```
+# (a) not installed, yet
+sdk install java 8.0.282.j9-adpt
+
+# (b) already installed
+sdk use java 8.0.282.j9-adpt
+```
 
 Please execute at least step 1 + 2 if before importing restdocs-wiremock into your IDE.
 
