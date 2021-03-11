@@ -45,6 +45,17 @@ This repository consists of four projects
 
 ### Dependencies
 
+This project uses JDK.
+JDK 8 can be installed with [SDKMAN!](https://sdkman.io/).
+
+```
+# (a) not installed, yet
+sdk install java 8.0.282.j9-adpt
+
+# (b) already installed
+sdk use java 8.0.282.j9-adpt
+```
+
 The project is published on `jcenter` from `bintray`, so firstly, you need to add `jcenter` as package
 repository for your project.
 
