@@ -1,12 +1,11 @@
 plugins {
+    id 'com.github.kt3k.coveralls' version '2.8.2'
+    id 'jacoco'
     id 'java'
     id 'maven'
     id 'maven-publish'
-    id 'jacoco'
-    id 'com.github.kt3k.coveralls' version '2.8.2'
+    id 'signing'
 }
-
-apply plugin: 'com.jfrog.bintray'
 
 repositories {
     jcenter()
@@ -49,28 +48,43 @@ publishing {
             artifactId 'restdocs-wiremock'
             groupId = project.group
 
-            artifact sourceJar {
-                classifier 'sources'
+            pom {
+                  name = 'REST Docs WireMock'
+                  description = 'Spring REST Docs WireMock Integration'
+                  url = 'https://github.com/ePages-de/restdocs-wiremock'
+                  licenses {
+                      license {
+                          name = 'The Apache License, Version 2.0'
+                          url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                      }
+                  }
+                  developers {
+                      developer {
+                          id = 'ePages'
+                          name = 'ePages Devs'
+                          email = 'info@epages.com'
+                      }
+                  }
+                  scm {
+                      connection = 'scm:git:git://github.com:ePages-de/restdocs-wiremock.git'
+                      developerConnection = 'scm:git:ssh://github.com:ePages-de/restdocs-wiremock.git'
+                      url = 'https://github.com/ePages-de/restdocs-wiremock'
+                  }
             }
         }
     }
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
 
-bintray {
-    user = project.findProperty('bintrayUser')   ?: System.getenv('BINTRAY_USER')
-    key  = project.findProperty('bintrayApiKey') ?: System.getenv('BINTRAY_API_KEY')
-    publications = ['mavenJava','sourceJar']
-    publish = true
-    pkg {
-        repo = "maven"
-        name = 'restdocs-wiremock'
-        userOrg = 'epages'
-        websiteUrl = 'https://github.com/ePages-de/restdocs-wiremock'
-        issueTrackerUrl = 'https://github.com/ePages-de/restdocs-wiremock/issues'
-        vcsUrl = 'https://github.com/ePages-de/restdocs-wiremock.git'
-        githubRepo = 'ePages-de/restdocs-wiremock'
-        githubReleaseNotesFile = 'README.md'
-        licenses = ['Apache-2.0']
-    }
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+signing {
+    sign publishing.publications.mavenJava
+    sign configurations.archives
 }
