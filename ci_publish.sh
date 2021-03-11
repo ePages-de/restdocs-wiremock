@@ -10,5 +10,6 @@ set -e # Exit with nonzero exit code if anything fails
 		--exclude-task :restdocs-server:publishToSonatype \
 		--info \
 	 	-Dorg.gradle.project.signing.keyId="${SIGNING_KEY_ID}" \
-		-Dorg.gradle.project.signing.password="${SIGNING_PASSWORD}"
+		-Dorg.gradle.project.signing.password="${SIGNING_PASSWORD}" \
+		-Dorg.gradle.project.signing.secretKeyRingFile="${TRAVIS_BUILD_DIR}/${SIGNING_KEYRING_FILE}"
 # fi
