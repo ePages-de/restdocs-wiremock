@@ -8,10 +8,11 @@ buildscript {
 }
 
 plugins {
+    id 'eclipse'
     id 'java'
     id 'maven'
     id 'maven-publish'
-    id 'eclipse'
+    id 'signing'
 }
 
 apply plugin: 'org.springframework.boot'
@@ -45,11 +46,7 @@ publishing {
             from components.java
             artifactId 'wiremock-spring-boot-starter'
             groupId = project.group
-
-            artifact sourceJar {
-                classifier 'sources'
-            }
-
+            
             pom {
                   name = 'My Library'
                   description = 'A concise description of my library'
@@ -79,4 +76,18 @@ publishing {
             }
         }
     }
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+signing {
+    sign publishing.publications.mavenJava
+    sign configurations.archives
 }

@@ -1,9 +1,10 @@
 plugins {
+    id 'com.github.kt3k.coveralls' version '2.8.2'
+    id 'jacoco'
     id 'java'
     id 'maven'
     id 'maven-publish'
-    id 'jacoco'
-    id 'com.github.kt3k.coveralls' version '2.8.2'
+    id 'signing'
 }
 
 repositories {
@@ -40,20 +41,12 @@ task sourceJar(type: Jar) {
     from sourceSets.main.allJava
 }
 
-tasks.withType(Javadoc) {
-    options.addStringOption('Xdoclint:none', '-quiet')
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
             artifactId 'restdocs-wiremock'
             groupId = project.group
-
-            artifact sourceJar {
-                classifier 'sources'
-            }
 
             pom {
                   name = 'My Library'
@@ -84,4 +77,18 @@ publishing {
             }
         }
     }
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+signing {
+    sign publishing.publications.mavenJava
+    sign configurations.archives
 }
