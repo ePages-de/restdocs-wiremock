@@ -8,10 +8,13 @@ cache:
   - "$HOME/.gradle"
 install: true
 script: "./gradlew clean build jacocoTestReport coveralls"
+repos:
+  ePages-de/restdocs-wiremock:
+    endpoint: https://api.travis-ci.org/
 before_install:
 - openssl aes-256-cbc -K $encrypted_c2f58914b0fd_key -iv $encrypted_c2f58914b0fd_iv -in secret-keys.gpg.enc -out secret-keys.gpg -d
 after_success:
-- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./publish.sh; fi
+- ./publish.sh
 env:
   global:
   - CI_NAME=travis-ci
