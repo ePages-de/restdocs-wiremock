@@ -31,13 +31,16 @@ Details and background information can be read on our [ePages Developer Blog](ht
 <!-- /TOC -->
 ## Contents
 
-This repository consists of four projects
+This repository consists of two libraries:
 
 * `restdocs-wiremock`: The library to extend Spring REST Docs with WireMock stub snippet generation.
-* `restdocs-server`: A sample server documenting its REST API (i.e. the Spring REST Docs "notes" example).
-   Besides producing human-readable documentation it will also generate JSON snippets to be used as stubs for WireMock.
 * `wiremock-spring-boot-starter`: A spring boot starter which adds a `WireMockServer` to your client's ApplicationContext for integration testing.
   This is optional, but highly recommended when verifying your client contract in a SpringBootTest.
+
+And two sample projects:
+
+* `restdocs-server`: A sample server documenting its REST API (i.e. the Spring REST Docs "notes" example).
+   Besides producing human-readable documentation it will also generate JSON snippets to be used as stubs for WireMock.
 * `restdocs-client`: A sample client using the server API, with integration testing its client contract against the stubs provided via WireMock.
 
 
@@ -334,6 +337,17 @@ public class MyTest {
 
 ## Building from source
 
+This project uses JDK 8.
+JDK 8 can be used via [SDKMAN!](https://sdkman.io/).
+
+```
+# (a) not installed, yet
+sdk install java 8.0.282.j9-adpt
+
+# (b) already installed
+sdk use java 8.0.282.j9-adpt
+```
+
 Please execute at least step 1 + 2 if before importing restdocs-wiremock into your IDE.
 
 1. Publish the current restdocs-wiremock library code into your local maven repository.
@@ -359,17 +373,37 @@ Please execute at least step 1 + 2 if before importing restdocs-wiremock into yo
 
 ## Publishing
 
-This project makes use of the [axion-release-plugin](https://github.com/allegro/axion-release-plugin)
-and publishing is automated in travis, when a new release is tagged in git.
-
-Locally you should be able to create a new release by running the `release` task on gradle. A successful
-travis build of this tag should finally end up on [bintray](https://bintray.com/epages/maven/restdocs-wiremock/).
+Given that the `master` branch on the upstream repository is in the state from which you want to create a release, execute the following steps:
 
 ```shell
-./gradlew clean build release
+git checkout master
+git pull upstream master
+
+# Print current version to the terminal
+./gradlew currentVersion
+
+# (a) Release new patch version
+./gradlew release -Prelease.versionIncrementer=incrementPatch
+
+# (b) Release new minor version
+./gradlew release -Prelease.versionIncrementer=incrementMajor
+
+## (c) Release new major version
+./gradlew release -Prelease.versionIncrementer=incrementMajor
+
+# Print current version to the terminal
+./gradlew currentVersion
 ```
+
+TravisCI will then take care to call the Gradle tasks which upload the release to Sonatype.
+A new staging repository will be create at [oss.sonatype.org](https://oss.sonatype.org/#stagingRepositories).
+You need to login there, go to the latest staging repository, and then close and release the repository in the Sonatype UI.
+
+(Once this process is working reliably we can also automate the final manual steps.)
 
 ## Other resources
 
+- [gradle-nexus/publish-plugin](https://github.com/gradle-nexus/publish-plugin)
+- [allegro/axion-release-plugin](https://axion-release-plugin.readthedocs.io)
+- [Maven Publish Plugin](https://docs.gradle.org/current/userguide/publishing_maven.html)
 - A similar approach is taken by [Spring Cloud Contract](https://cloud.spring.io/spring-cloud-contract/)
-
