@@ -382,8 +382,8 @@ Check that there are no errors afterwards (e.g. missing signatures or Javadoc JA
 
 4. Release the repository
 
-Select the genereted staging repository and publish it.
-Soon after, the release should be available in the in the "Public Repositories" of ePages:
+Select the generated staging repository and publish it.
+Soon after, the release should be available in the "Public Repositories" of ePages:
 
 https://oss.sonatype.org/service/local/repo_groups/public/content/com/epages/restdocs-wiremock/maven-metadata.xml
 
