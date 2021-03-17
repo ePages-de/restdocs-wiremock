@@ -3,7 +3,6 @@
 ![](https://img.shields.io/github/license/ePages-de/restdocs-wiremock.svg?branch=master)
 [ ![Build Status](https://travis-ci.org/ePages-de/restdocs-wiremock.svg)](https://travis-ci.org/ePages-de/restdocs-wiremock)
 [ ![Coverage Status](https://coveralls.io/repos/github/ePages-de/restdocs-wiremock/badge.svg?branch=master)](https://coveralls.io/r/ePages-de/restdocs-wiremock)
-[ ![Download](https://api.bintray.com/packages/epages/maven/restdocs-wiremock/images/download.svg)](https://bintray.com/epages/maven/restdocs-wiremock/_latestVersion)
 
 This is a plugin for auto-generating [WireMock](http://wiremock.org/) stubs
 as part of documenting your REST API with [Spring REST Docs](http://projects.spring.io/spring-restdocs/).
