@@ -48,7 +48,7 @@ And two sample projects:
 
 ### Dependencies
 
-The project is published on `jcenter` from `bintray`, so firstly, you need to add `jcenter` as package
+The project is published on Maven Central, so firstly, you need to add `mavenCentral` as package
 repository for your project.
 
 Then, add `restdocs-wiremock` as a dependency in test scope. As `restdocs-wiremock` only depends on `spring-restdocs-core`,
@@ -59,30 +59,18 @@ In gradle it would look like this:
 
 ```groovy
 dependencies {
-  testCompile('com.epages:restdocs-wiremock:0.7.27')
+  testCompile('com.epages:restdocs-wiremock:0.8.0')
   testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
-}
-```
-
-Spring Boot 1.3.x users: Please make sure you use Spring REST Docs `1.1.+` or newer. The `1.0.x.RELEASE`, included with Spring Boot 1.3 is not compatible with this plugin.
-The example below shows how to set Spring REST Docs to this version, when using Spring dependency management.
-
-```groovy
-dependencyManagement.imports {
-    ext['spring-restdocs.version'] = '1.2.2.RELEASE'
 }
 ```
 
 When using maven:
 
 ```xml
-<properties>
-	<spring-restdocs.version>1.2.2.RELEASE</spring-restdocs.version>
-</properties>
 <dependency>
 	<groupId>com.epages</groupId>
 	<artifactId>restdocs-wiremock</artifactId>
-	<version>0.7.27</version>
+	<version>0.8.0</version>
 	<scope>test</scope>
 </dependency>
 <dependency>
@@ -252,7 +240,7 @@ On the client side, add a dependency to the test-runtime to the jar containing t
 that, the JSON files can be accessed as classpath resources.
 
 ```groovy
-testRuntime (group:'com.epages', name:'restdocs-server', version:'0.7.27', classifier:'wiremock', ext:'jar')
+testRuntime (group:'com.epages', name:'restdocs-server', version:'0.8.0', classifier:'wiremock', ext:'jar')
 ``` 
 
 ## How to use WireMock in your client tests
@@ -269,7 +257,7 @@ Services based on `spring-cloud-netflix`, i.e. using `feign` and `ribbon`, are a
 To add a dependency via gradle, extend your `build.gradle` with the following line:
 
 ```groovy
-  testCompile('com.epages:wiremock-spring-boot-starter:0.7.27')
+  testCompile('com.epages:wiremock-spring-boot-starter:0.8.0')
 ```
 
 
@@ -279,7 +267,7 @@ When using maven, add the following dependency in test scope.
 <dependency>
 	<groupId>com.epages</groupId>
 	<artifactId>wiremock-spring-boot-starter</artifactId>
-	<version>0.7.27</version>
+	<version>0.8.0</version>
 	<scope>test</scope>
 </dependency>
 ```
@@ -375,31 +363,29 @@ Please execute at least step 1 + 2 if before importing restdocs-wiremock into yo
 
 Given that the `master` branch on the upstream repository is in the state from which you want to create a release, execute the following steps:
 
-```shell
-git checkout master
-git pull upstream master
+1. [Create release via the GitHub UI](https://github.com/ePages-de/restdocs-wiremock/releases/new)
 
-# Print current version to the terminal
-./gradlew currentVersion
+Use the intended version number as "Tag version", e.g. "0.8.0".
 
-# (a) Release new patch version
-./gradlew release -Prelease.versionIncrementer=incrementPatch
+This will automatically trigger a Travis build which publishes the JAR files for this release to Sonatype.
 
-# (b) Release new minor version
-./gradlew release -Prelease.versionIncrementer=incrementMajor
+2. Login to Sonatype
 
-## (c) Release new major version
-./gradlew release -Prelease.versionIncrementer=incrementMajor
+Login to Sonatype and navigate to the [staging repositories](https://oss.sonatype.org/#stagingRepositories).
 
-# Print current version to the terminal
-./gradlew currentVersion
-```
+3. Close the staging repository
 
-TravisCI will then take care to call the Gradle tasks which upload the release to Sonatype.
-A new staging repository will be create at [oss.sonatype.org](https://oss.sonatype.org/#stagingRepositories).
-You need to login there, go to the latest staging repository, and then close and release the repository in the Sonatype UI.
+Select the generated staging repository and close it.
+Check that there are no errors afterwards (e.g. missing signatures or Javadoc JARs).
 
-(Once this process is working reliably we can also automate the final manual steps.)
+4. Release the repository
+
+Select the generated staging repository and publish it.
+Soon after, the release should be available in the ["Public Repositories" of ePages](https://oss.sonatype.org/service/local/repo_groups/public/content/com/epages/restdocs-wiremock/maven-metadata.xml).
+
+5. Update documentation
+
+Create a new commit which updates the version numbers in the `README` file.
 
 ## Other resources
 
