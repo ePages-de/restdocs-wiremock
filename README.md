@@ -1,5 +1,6 @@
 # Spring REST Docs WireMock Integration
 
+[![oss lifecycle](https://img.shields.io/badge/oss_lifecycle-maintenance-yellow.svg)]()
 ![](https://img.shields.io/github/license/ePages-de/restdocs-wiremock.svg?branch=master)
 [ ![Build Status](https://travis-ci.com/ePages-de/restdocs-wiremock.svg)](https://travis-ci.com/ePages-de/restdocs-wiremock)
 [ ![Coverage Status](https://coveralls.io/repos/github/ePages-de/restdocs-wiremock/badge.svg?branch=master)](https://coveralls.io/r/ePages-de/restdocs-wiremock)
@@ -232,8 +233,6 @@ task wiremockJar(type: Jar) {
 	}
 }
 ```
-
-*TODO: Add maven example.*
 
 On the client side, add a dependency to the test-runtime to the jar containing the WireMock stubs. After
 that, the JSON files can be accessed as classpath resources.
