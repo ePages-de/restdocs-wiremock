@@ -5,7 +5,7 @@ set -e # Exit with nonzero exit code if anything fails
   -Dsonar.projectKey="ePages-de_restdocs-wiremock" \
   -Dsonar.organization="epages-de" \
   -Dsonar.host.url="https://sonarcloud.io" \
-  -Dsonar.login="$SONAR_TOKEN" 
+  -Dsonar.login="$SONAR_TOKEN" \
   clean  \
   build \
   sonarqube \
