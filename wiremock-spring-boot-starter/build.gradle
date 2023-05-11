@@ -1,0 +1,88 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.9.RELEASE'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'maven'
+    id 'maven-publish'
+    id 'signing'
+}
+
+apply plugin: 'org.springframework.boot'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+group = 'com.epages'
+description = 'Spring Boot Starter for adding a WireMock server to your integration test'
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-test'
+    compile 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+    compile 'com.github.tomakehurst:wiremock-standalone:2.18.0'
+    testCompile 'org.springframework:spring-web'
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+bootRepackage.enabled = false
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId 'wiremock-spring-boot-starter'
+            groupId = project.group
+            
+            pom {
+                  name = 'WireMock Spring Boot Starter'
+                  description = 'A Spring Boot Starter which adds a WireMockServer to your client\'s ApplicationContext for integration testing.'
+                  url = 'https://github.com/ePages-de/restdocs-wiremock'
+                  licenses {
+                      license {
+                          name = 'The Apache License, Version 2.0'
+                          url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                      }
+                  }
+                  developers {
+                      developer {
+                          id = 'ePages'
+                          name = 'ePages Devs'
+                          email = 'info@epages.com'
+                      }
+                  }
+                  scm {
+                      connection = 'scm:git:git://github.com:ePages-de/restdocs-wiremock.git'
+                      developerConnection = 'scm:git:ssh://github.com:ePages-de/restdocs-wiremock.git'
+                      url = 'https://github.com/ePages-de/restdocs-wiremock'
+                  }
+            }
+        }
+    }
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+signing {
+    sign publishing.publications.mavenJava
+    sign configurations.archives
+}
