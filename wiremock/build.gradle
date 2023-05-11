@@ -1,5 +1,4 @@
 plugins {
-    id 'com.github.kt3k.coveralls' version '2.8.2'
     id 'jacoco'
     id 'java'
     id 'maven'
@@ -28,7 +27,7 @@ targetCompatibility = 1.7
 
 jacocoTestReport {
     reports {
-        xml.enabled = true // coveralls plugin depends on xml format report
+        xml.enabled = true
         html.enabled = true
     }
 }

@@ -3,7 +3,7 @@
 .gradle/
 .*
 !.gitignore
-!.travis.yml
+!.github/
 .settings/
 build/
 out/
