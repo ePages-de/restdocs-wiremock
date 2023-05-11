@@ -84,3 +84,11 @@ signing {
     sign publishing.publications.mavenJava
     sign configurations.archives
 }
+
+sonarqube {
+  properties {
+    property "sonar.projectKey", "ePages-de_restdocs-wiremock"
+    property "sonar.organization", "epages-de"
+    property "sonar.host.url", "https://sonarcloud.io"
+  }
+}
