@@ -32,6 +32,8 @@ ext {
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-hateoas'
+    compile 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
+    compile 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
 
     runtime 'com.h2database:h2'
     runtime 'org.atteo:evo-inflector:1.2.2'
