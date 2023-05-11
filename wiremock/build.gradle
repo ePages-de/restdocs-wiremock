@@ -4,6 +4,7 @@ plugins {
     id 'maven'
     id 'maven-publish'
     id 'signing'
+    id 'org.sonarqube' version '3.5.0.2730'
 }
 
 repositories {
