@@ -7,7 +7,7 @@ plugins {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -30,10 +30,6 @@ jacocoTestReport {
         xml.enabled = true
         html.enabled = true
     }
-}
-
-tasks.coveralls {
-    dependsOn 'check'
 }
 
 task sourceJar(type: Jar) {

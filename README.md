@@ -2,8 +2,6 @@
 
 [![oss lifecycle](https://img.shields.io/badge/oss_lifecycle-maintenance-yellow.svg)]()
 ![](https://img.shields.io/github/license/ePages-de/restdocs-wiremock.svg?branch=master)
-[ ![Build Status](https://travis-ci.com/ePages-de/restdocs-wiremock.svg)](https://travis-ci.com/ePages-de/restdocs-wiremock)
-[ ![Coverage Status](https://coveralls.io/repos/github/ePages-de/restdocs-wiremock/badge.svg?branch=master)](https://coveralls.io/r/ePages-de/restdocs-wiremock)
 
 This is a plugin for auto-generating [WireMock](http://wiremock.org/) stubs
 as part of documenting your REST API with [Spring REST Docs](http://projects.spring.io/spring-restdocs/).
