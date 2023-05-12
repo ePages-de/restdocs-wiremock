@@ -2,14 +2,13 @@ package com.epages.restdocs;
 
 import static com.epages.restdocs.WireMockDocumentation.templatedResponseField;
 import static java.util.Collections.singletonList;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static uk.co.datumedge.hamcrest.json.SameJSONAs.sameJSONAs;
 
 import java.util.Arrays;
 import java.util.Collections;
 
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.web.util.UriTemplate;
 
 public class ResponseTemplateProcessorTest {
@@ -20,7 +19,7 @@ public class ResponseTemplateProcessorTest {
             "}";
 
     @Test
-    public void should_replace_with_uri_variable_expression() {
+    public void should_replace_with_uri_variable_expression() throws JSONException {
         ResponseFieldTemplateDescriptor templateDescriptor = templatedResponseField("id").replacedWithUriTemplateVariableValue("someId");
         ResponseTemplateProcessor templateProcessor = new ResponseTemplateProcessor(
                 singletonList(templateDescriptor),
@@ -29,14 +28,15 @@ public class ResponseTemplateProcessorTest {
 
         String result = templateProcessor.replaceTemplateFields();
 
-        assertThat(result, sameJSONAs("{\n" +
-                "  \"id\": \"{{request.requestLine.pathSegments.[2]}}\",\n" +
-                "  \"name\": \"some\"\n" +
-                "}"));
+        String expected = "{\n" +
+            "  \"id\": \"{{request.requestLine.pathSegments.[2]}}\",\n" +
+            "  \"name\": \"some\"\n" +
+            "}";
+        JSONAssert.assertEquals(expected, result, true);
     }
 
     @Test
-    public void should_handle_multiple_descriptors() {
+    public void should_handle_multiple_descriptors() throws JSONException {
         ResponseTemplateProcessor templateProcessor = new ResponseTemplateProcessor(
                 Arrays.asList(
                         templatedResponseField("id").replacedWithWireMockTemplateExpression("randomValue length=33 type='ALPHANUMERIC'"),
@@ -47,22 +47,23 @@ public class ResponseTemplateProcessorTest {
 
         String result = templateProcessor.replaceTemplateFields();
 
-        assertThat(result, sameJSONAs("{\n" +
-                "  \"id\":\"{{randomValue length=33 type='ALPHANUMERIC'}}\",\n" +
-                "  \"name\":\"{{randomValue type='UUID'}}\"\n" +
-                "}"));
+        String expected = "{\n" +
+            "  \"id\":\"{{randomValue length=33 type='ALPHANUMERIC'}}\",\n" +
+            "  \"name\":\"{{randomValue type='UUID'}}\"\n" +
+            "}";
+        JSONAssert.assertEquals(expected, result, true);
     }
 
     @Test
-    public void should_return_response_on_empty_descriptors() {
+    public void should_return_response_on_empty_descriptors() throws JSONException {
         ResponseTemplateProcessor templateProcessor = new ResponseTemplateProcessor(
-                Collections.<ResponseFieldTemplateDescriptor>emptyList(),
+                Collections.emptyList(),
                 null,
                 jsonBody);
 
         String result = templateProcessor.replaceTemplateFields();
 
-        assertThat(result, is(jsonBody));
+        JSONAssert.assertEquals(jsonBody, result, true);
     }
 
     @Test(expected = IllegalArgumentException.class)

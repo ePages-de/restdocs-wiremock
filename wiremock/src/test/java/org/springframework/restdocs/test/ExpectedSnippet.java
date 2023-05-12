@@ -20,7 +20,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.hamcrest.Matcher;
 import org.junit.rules.TestRule;
@@ -61,7 +60,7 @@ public class ExpectedSnippet implements TestRule {
 		return new ExpectedSnippetStatement(base);
 	}
 
-	private void verifySnippet() throws IOException {
+	private void verifySnippet() {
 		if (this.outputDirectory != null && this.expectedName != null) {
 			File snippetDir = new File(this.outputDirectory, this.expectedName);
 			File snippetFile = new File(snippetDir,
