@@ -1,0 +1,25 @@
+name: Create release
+
+# on:
+#   push:
+#     tags:
+#       - "*"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/test.yml
+  release:
+    runs-on: ubuntu-22.04
+    needs: build
+    steps:
+      - name: Call publish script
+        env:
+          FILE_ENCRYPTION_PASSWORD: ${{ secrets.FILE_ENCRYPTION_PASSWORD }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        run: ./ci_publish.sh
