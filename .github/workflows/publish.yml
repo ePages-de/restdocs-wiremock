@@ -1,13 +1,11 @@
 name: Publish
 
-# on:
-#   push:
-#     tags:
-#       - "*"
-
 on:
+  push:
+    tags:
+      - "*"
   workflow_dispatch:
-
+ 
 jobs:
   publish:
     name: Publish
