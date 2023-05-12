@@ -3,7 +3,7 @@ package com.epages.restdocs;
 import static com.epages.restdocs.WireMockDocumentation.templatedResponseField;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.co.datumedge.hamcrest.json.SameJSONAs.sameJSONAs;
 
 import java.util.Arrays;
