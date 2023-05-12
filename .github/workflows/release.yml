@@ -9,12 +9,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    uses: ePages-de/restdocs-wiremock/.github/workflows/test.yml@master
   release:
     runs-on: ubuntu-22.04
     needs: test
     steps:
+      - name: Test
+        uses: ./.github/workflows/test.yml
       - name: Call publish script
         env:
           FILE_ENCRYPTION_PASSWORD: ${{ secrets.FILE_ENCRYPTION_PASSWORD }}
