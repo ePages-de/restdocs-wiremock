@@ -2,7 +2,6 @@
 
 [![oss lifecycle](https://img.shields.io/badge/oss_lifecycle-maintenance-yellow.svg)]()
 ![](https://img.shields.io/github/license/ePages-de/restdocs-wiremock.svg?branch=master)
-[ ![Build Status](https://travis-ci.com/ePages-de/restdocs-wiremock.svg)](https://travis-ci.com/ePages-de/restdocs-wiremock)
 
 This is a plugin for auto-generating [WireMock](http://wiremock.org/) stubs
 as part of documenting your REST API with [Spring REST Docs](http://projects.spring.io/spring-restdocs/).
@@ -35,13 +34,6 @@ This repository consists of two libraries:
 * `restdocs-wiremock`: The library to extend Spring REST Docs with WireMock stub snippet generation.
 * `wiremock-spring-boot-starter`: A spring boot starter which adds a `WireMockServer` to your client's ApplicationContext for integration testing.
   This is optional, but highly recommended when verifying your client contract in a SpringBootTest.
-
-And two sample projects:
-
-* `restdocs-server`: A sample server documenting its REST API (i.e. the Spring REST Docs "notes" example).
-   Besides producing human-readable documentation it will also generate JSON snippets to be used as stubs for WireMock.
-* `restdocs-client`: A sample client using the server API, with integration testing its client contract against the stubs provided via WireMock.
-
 
 ## How to include `restdocs-wiremock` into your server project
 
@@ -280,7 +272,7 @@ project, like shown in the following gradle example:
 
 ### Configuring your test to use the WireMock stubs
 
-Here is an excerpt of the sample test from the restdocs-client project to illustrate the usage.
+Here is an excerpt of the sample test from a restdocs client project to illustrate the usage.
 
 ```java
 @RunWith(SpringJUnit4ClassRunner.class)
