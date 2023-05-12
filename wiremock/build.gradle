@@ -1,29 +1,29 @@
 plugins {
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'jacoco'
     id 'java'
-    id 'maven'
     id 'maven-publish'
     id 'signing'
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    compile "org.springframework.restdocs:spring-restdocs-core:1.2.2.RELEASE"
-    compile "com.jayway.jsonpath:json-path:2.3.0"
+    implementation 'org.springframework.restdocs:spring-restdocs-core:1.2.2.RELEASE'
+    implementation 'com.jayway.jsonpath:json-path:2.3.0'
     compileOnly 'junit:junit:4.12'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.18.0'
-    testCompile 'uk.co.datumedge:hamcrest-json:0.2'
-    testCompile 'com.google.guava:guava:23.0'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.18.0'
+    testImplementation 'uk.co.datumedge:hamcrest-json:0.2'
+    testImplementation 'com.google.guava:guava:23.0'
 }
 
 group = 'com.epages'
 description = 'Adds WireMock stub snippets to Spring REST Docs'
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 jacocoTestReport {
     reports {

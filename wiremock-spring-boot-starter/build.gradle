@@ -3,13 +3,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.9.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.4.13'
     }
 }
 
 plugins {
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id 'maven'
     id 'maven-publish'
     id 'signing'
 }
@@ -20,24 +20,26 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 group = 'com.epages'
 description = 'Spring Boot Starter for adding a WireMock server to your integration test'
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-test'
-    compile 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter'
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
-    compile 'com.github.tomakehurst:wiremock-standalone:2.18.0'
-    testCompile 'org.springframework:spring-web'
+    implementation 'com.github.tomakehurst:wiremock-standalone:2.18.0'
+    testImplementation 'org.springframework:spring-web'
+    testImplementation 'junit:junit'
 }
 
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
 }
 
-bootRepackage.enabled = false
+bootJar.enabled = false
+jar.enabled = true
 
 publishing {
     publications {
