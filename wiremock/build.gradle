@@ -20,6 +20,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.18.0'
     testImplementation 'uk.co.datumedge:hamcrest-json:0.2'
     testImplementation 'com.google.guava:guava:30.0-jre'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 
 group = 'com.epages'
