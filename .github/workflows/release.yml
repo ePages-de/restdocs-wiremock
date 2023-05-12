@@ -1,4 +1,4 @@
-name: Create release
+name: Release
 
 # on:
 #   push:
@@ -9,12 +9,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  release:
-    runs-on: ubuntu-22.04
+  build:
+    name: Release
+    runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: 'zulu'
+#      - name: Cache SonarCloud packages
+#        uses: actions/cache@v3
+#        with:
+#          path: ~/.sonar/cache
+#          key: ${{ runner.os }}-sonar
+#          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
       - name: Test
-        uses: ePages-de/restdocs-wiremock/.github/workflows/test.yml@master
-      - name: Call publish script
+        run: ./ci_test.sh
+      - name: Publish
         env:
           FILE_ENCRYPTION_PASSWORD: ${{ secrets.FILE_ENCRYPTION_PASSWORD }}
           SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
