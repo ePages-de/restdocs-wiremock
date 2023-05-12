@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Test
-        uses: ./.github/workflows/test.yml
+        uses: ePages-de/restdocs-wiremock/.github/workflows/test.yml@master
       - name: Call publish script
         env:
           FILE_ENCRYPTION_PASSWORD: ${{ secrets.FILE_ENCRYPTION_PASSWORD }}
