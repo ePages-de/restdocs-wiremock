@@ -9,11 +9,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    uses: ./.github/workflows/test.yml
+  test:
+    uses: ePages-de/restdocs-wiremock/.github/workflows/test.yml@master
   release:
     runs-on: ubuntu-22.04
-    needs: build
+    needs: test
     steps:
       - name: Call publish script
         env:
