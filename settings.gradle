@@ -1,11 +1,5 @@
 include 'wiremock'
-include 'server'
-include 'client'
 include 'wiremock-spring-boot-starter'
 
 rootProject.name = 'restdocs-wiremock-parent'
-
-['wiremock','server','client'].each {
-    project(":$it").name = "restdocs-$it"
-}
-
+project(":wiremock").name = "restdocs-wiremock"
