@@ -11,13 +11,15 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.restdocs:spring-restdocs-core:1.2.2.RELEASE'
-    implementation 'com.jayway.jsonpath:json-path:2.3.0'
-    compileOnly 'junit:junit:4.12'
-    testImplementation 'junit:junit:4.12'
+    // FIXME: Starting with version 2.0.3.RELEASE there are missing dependencies from "org.springframework.web"
+    // See https://github.com/spring-projects/spring-restdocs/releases/tag/v2.0.4.RELEASE
+    implementation 'org.springframework.restdocs:spring-restdocs-core:2.0.3.RELEASE'
+    implementation 'com.jayway.jsonpath:json-path:2.8.0'
+    compileOnly 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.1'
     testImplementation 'org.mockito:mockito-core:2.18.0'
     testImplementation 'uk.co.datumedge:hamcrest-json:0.2'
-    testImplementation 'com.google.guava:guava:23.0'
+    testImplementation 'com.google.guava:guava:30.0-jre'
 }
 
 group = 'com.epages'
@@ -27,8 +29,7 @@ targetCompatibility = 1.8
 
 jacocoTestReport {
     reports {
-        xml.enabled = true
-        html.enabled = true
+        xml.required = true
     }
 }
 
