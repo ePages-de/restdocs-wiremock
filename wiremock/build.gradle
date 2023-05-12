@@ -15,7 +15,7 @@ dependencies {
     compile "com.jayway.jsonpath:json-path:2.3.0"
     compileOnly 'junit:junit:4.12'
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.10.0'
+    testCompile 'org.mockito:mockito-core:2.18.0'
     testCompile 'uk.co.datumedge:hamcrest-json:0.2'
     testCompile 'com.google.guava:guava:23.0'
 }
@@ -30,10 +30,6 @@ jacocoTestReport {
         xml.enabled = true
         html.enabled = true
     }
-}
-
-tasks.coveralls {
-    dependsOn 'check'
 }
 
 task sourceJar(type: Jar) {
