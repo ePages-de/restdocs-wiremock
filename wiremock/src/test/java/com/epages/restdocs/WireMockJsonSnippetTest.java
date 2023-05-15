@@ -1,5 +1,6 @@
 package com.epages.restdocs;
 
+import static com.epages.restdocs.JsonStringMatcher.sameJSONAs;
 import static com.epages.restdocs.WireMockDocumentation.idFieldReplacedWithPathParameterValue;
 import static com.epages.restdocs.WireMockDocumentation.templatedResponseField;
 import static com.epages.restdocs.WireMockDocumentation.wiremockJson;
@@ -12,14 +13,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.generate.RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE;
-import static uk.co.datumedge.hamcrest.json.SameJSONAs.sameJSONAs;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -78,9 +77,10 @@ public class WireMockJsonSnippetTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void simpleRequest() throws IOException {
-		this.expectedSnippet.expectWireMockJson("simple-request").withContents(
-				(Matcher<String>)
-						sameJSONAs(new ObjectMapper().writeValueAsString(expectedJsonForSimpleRequest())));
+		String expectedJson = new ObjectMapper().writeValueAsString(expectedJsonForSimpleRequest());
+
+		this.expectedSnippet.expectWireMockJson("simple-request").withContents(sameJSONAs(expectedJson));
+
 		wiremockJson().document(operationBuilder("simple-request").request("http://localhost/").method("GET").build());
 	}
 
@@ -95,9 +95,13 @@ public class WireMockJsonSnippetTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void simpleRequestWithUriTemplate() throws IOException {
-		this.expectedSnippet.expectWireMockJson("simple-request").withContents(
-				(Matcher<String>)
-						sameJSONAs(new ObjectMapper().writeValueAsString(expectedJsonForSimpleRequestWithUrlPattern())));
+		String expectedJson = new ObjectMapper().writeValueAsString(
+			expectedJsonForSimpleRequestWithUrlPattern()
+		);
+
+		this.expectedSnippet.expectWireMockJson("simple-request");
+		this.expectedSnippet.withContents(sameJSONAs(expectedJson));
+
 		wiremockJson().document(operationBuilder("simple-request")
 				.attribute(ATTRIBUTE_NAME_URL_TEMPLATE, "http://localhost/some/{id}/other")
 				.request("http://localhost/some/123-qbc/other")
@@ -115,9 +119,13 @@ public class WireMockJsonSnippetTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void simpleRequestWithUriTemplateAndResponseTemplate() throws IOException {
-		this.expectedSnippet.expectWireMockJson("simple-request")
-				.withContents((Matcher<String>) sameJSONAs(
-						new ObjectMapper().writeValueAsString(expectedJsonForSimpleRequestWithUrlPatternAndResponseTemplate())));
+		String expected = new ObjectMapper().writeValueAsString(
+			expectedJsonForSimpleRequestWithUrlPatternAndResponseTemplate()
+		);
+
+		this.expectedSnippet.expectWireMockJson("simple-request").withContents(
+			sameJSONAs(expected)
+		);
 
 		OperationBuilder operationBuilder = operationBuilder("simple-request")
 				.attribute(ATTRIBUTE_NAME_URL_TEMPLATE, "http://localhost/some/{id}/other");
@@ -131,9 +139,11 @@ public class WireMockJsonSnippetTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void simpleRequestWithUriTemplateAndResponseTemplate1() throws IOException {
-		this.expectedSnippet.expectWireMockJson("simple-request")
-				.withContents((Matcher<String>) sameJSONAs(
-						new ObjectMapper().writeValueAsString(expectedJsonForSimpleRequestWithUrlPatternAndResponseTemplate())));
+		String expectedJson = new ObjectMapper().writeValueAsString(
+			expectedJsonForSimpleRequestWithUrlPatternAndResponseTemplate()
+		);
+
+		this.expectedSnippet.expectWireMockJson("simple-request").withContents(sameJSONAs(expectedJson));
 
 		OperationBuilder operationBuilder = operationBuilder("simple-request")
 				.attribute(ATTRIBUTE_NAME_URL_TEMPLATE, "http://localhost/some/{id}/other");
@@ -161,15 +171,19 @@ public class WireMockJsonSnippetTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void getRequestWithParams() throws IOException {
-		this.expectedSnippet.expectWireMockJson("get-request").withContents(
-				(Matcher<String>) sameJSONAs(new ObjectMapper().writeValueAsString(
-						of( //
-								"request", //
-								of("method", "GET", "urlPath", "/foo", "queryParameters", //
-										of("a", of("equalTo", "b")), "headers", of("Accept", of("contains", "json"))), //
-								"response", //
-								of("headers", emptyMap(), "body", "", "status", 200))
-						)));
+		String expectedJson = new ObjectMapper().writeValueAsString(
+			of(
+				"request",
+				of("method", "GET", "urlPath", "/foo", "queryParameters",
+					of("a", of("equalTo", "b")), "headers", of("Accept", of("contains", "json"))
+				),
+				"response",
+				of("headers", emptyMap(), "body", "", "status", 200)
+			)
+		);
+
+		this.expectedSnippet.expectWireMockJson("get-request").withContents(sameJSONAs(expectedJson));
+
 		wiremockJson().document(operationBuilder("get-request").request("http://localhost/foo?a=b&c=").method("GET")
 				.header("Accept", "application/json").build());
 	}
@@ -177,15 +191,18 @@ public class WireMockJsonSnippetTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void postRequest() throws IOException {
-		this.expectedSnippet.expectWireMockJson("post-request").withContents((Matcher<String>)
-				sameJSONAs(new ObjectMapper().writeValueAsString(
-						of( //
-						"request", //
-						of("method", "POST", "urlPath", "/", "headers", of("Content-Type", of("contains", "uri-list"))), //
-						"response", //
-						of("headers", //
-								of("Content-Length", "16", "Content-Type", "text/plain"),
-								"body", "response-content", "status", 200)))));
+		String expectedJson = new ObjectMapper().writeValueAsString(
+			of(
+				"request",
+				of("method", "POST", "urlPath", "/", "headers", of("Content-Type", of("contains", "uri-list"))),
+				"response",
+				of("headers",
+					of("Content-Length", "16", "Content-Type", "text/plain"),
+					"body", "response-content", "status", 200))
+		);
+
+		this.expectedSnippet.expectWireMockJson("post-request").withContents(sameJSONAs(expectedJson));
+
 		OperationBuilder operationBuilder = operationBuilder("post-request");
 		operationBuilder.response().content("response-content").header("Content-Type", "text/plain").build();
 		wiremockJson().document(operationBuilder.request("http://localhost/").method("POST")
@@ -195,15 +212,17 @@ public class WireMockJsonSnippetTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void customMediaType() throws IOException {
-		this.expectedSnippet.expectWireMockJson("custom-mediatype").withContents((Matcher<String>)
-				sameJSONAs(new ObjectMapper().writeValueAsString(
-						of( //
-								"request", //
-								of("method", "GET", "urlPath", "/foo", 
-								"headers", of("Accept", of("contains", "json"))), //
-								"response", //
-								of("headers", emptyMap(), "body", "", "status", 200))
-						)));
+		String expectedJson = new ObjectMapper().writeValueAsString(
+			of(
+				"request",
+				of("method", "GET", "urlPath", "/foo",
+					"headers", of("Accept", of("contains", "json"))),
+				"response", //
+				of("headers", emptyMap(), "body", "", "status", 200))
+		);
+
+		this.expectedSnippet.expectWireMockJson("custom-mediatype").withContents(sameJSONAs(expectedJson));
+
 		wiremockJson().document(operationBuilder("custom-mediatype").request("http://localhost/foo").method("GET")
 				.header("Accept", "application/com.carlosjgp.myservice+json; version=1.0").build());
 	}
