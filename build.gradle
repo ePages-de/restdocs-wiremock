@@ -7,6 +7,7 @@ buildscript {
 plugins {
     id 'com.github.ben-manes.versions' version '0.46.0'
     id 'io.github.gradle-nexus.publish-plugin' version '1.3.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'org.sonarqube' version '4.0.0.2929'
     id 'pl.allegro.tech.build.axion-release' version '1.15.0'
     id 'publishing'
@@ -34,8 +35,31 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
     apply plugin: 'jacoco'
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
+    repositories {
+        mavenCentral()
+    }
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    task sourceJar(type: Jar) {
+        from sourceSets.main.allJava
+    }
+
+    java {
+        withSourcesJar()
+        withJavadocJar()
+    }
+
+    javadoc {
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
 
     jacocoTestReport {
         reports {
