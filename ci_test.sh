@@ -6,4 +6,4 @@ set -e # Exit with nonzero exit code if anything fails
   build \
   --info \
   --exclude-task signMavenJavaPublication \
-  --exclude-task signArchives \
+  --exclude-task signArchives
