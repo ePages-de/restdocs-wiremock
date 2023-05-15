@@ -9,7 +9,7 @@ fi
 
 ./gradlew  \
   clean \
-  ${SONAR_GRADLE_TASK}
+  ${SONAR_GRADLE_TASK} \
   build \
   --info \
   --exclude-task signMavenJavaPublication \
