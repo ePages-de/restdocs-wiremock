@@ -1,6 +1,7 @@
 # Spring REST Docs WireMock Integration
 
 [![oss lifecycle](https://img.shields.io/badge/oss_lifecycle-maintenance-yellow.svg)]()
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ePages-de_restdocs-wiremock&metric=coverage)](https://sonarcloud.io/summary/new_code?id=ePages-de_restdocs-wiremock)
 ![](https://img.shields.io/github/license/ePages-de/restdocs-wiremock.svg?branch=master)
 
 This is a plugin for auto-generating [WireMock](http://wiremock.org/) stubs
