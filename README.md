@@ -342,27 +342,27 @@ Please execute at least step 1 + 2 if before importing restdocs-wiremock into yo
 
 Given that the `master` branch on the upstream repository is in the state from which you want to create a release, execute the following steps:
 
-(1) [Create release via the GitHub UI](https://github.com/ePages-de/restdocs-wiremock/releases/new)
+**(1) [Create release via the GitHub UI](https://github.com/ePages-de/restdocs-wiremock/releases/new)**
 
 Use the intended version number as "Tag version", e.g. "0.8.5".
 
 This will automatically trigger a Travis build which publishes the JAR files for this release to Sonatype.
 
-(2) Login to Sonatype
+**(2) Login to Sonatype**
 
 Login to Sonatype and navigate to the [staging repositories](https://oss.sonatype.org/#stagingRepositories).
 
-(3) Close the staging repository
+**(3) Close the staging repository**
 
 Select the generated staging repository and close it.
 Check that there are no errors afterwards (e.g. missing signatures or Javadoc JARs).
 
-(4) Release the repository
+**(4) Release the repository**
 
 Select the generated staging repository and publish it.
 Soon after, the release should be available in the ["Public Repositories" of ePages](https://oss.sonatype.org/service/local/repo_groups/public/content/com/epages/restdocs-wiremock/maven-metadata.xml).
 
-(5) Update documentation
+**(5) Update documentation**
 
 Create a new commit which updates the version numbers in the `README` file.
 
