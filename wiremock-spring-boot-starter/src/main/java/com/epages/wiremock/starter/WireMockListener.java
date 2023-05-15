@@ -21,7 +21,7 @@ class WireMockListener extends AbstractTestExecutionListener implements Ordered 
 	private WireMockTest wireMockAnnotation;
 
 	@Override
-	public void prepareTestInstance(TestContext testContext) throws Exception {
+	public void prepareTestInstance(TestContext testContext) {
 		if(wireMockAnnotation == null) {
 			return;
 		}
@@ -33,7 +33,7 @@ class WireMockListener extends AbstractTestExecutionListener implements Ordered 
 	}
 
 	@Override
-	public void beforeTestClass(TestContext testContext) throws Exception {
+	public void beforeTestClass(TestContext testContext) {
 		wireMockAnnotation = testContext.getTestClass().getAnnotation(WireMockTest.class);
 		if(wireMockAnnotation == null) {
 			return;
@@ -45,7 +45,7 @@ class WireMockListener extends AbstractTestExecutionListener implements Ordered 
 		properties.add("wiremock.enabled=true");
 		properties.add("wiremock.stubPath=" + wireMockAnnotation.stubPath());
 		properties.add("ribbon.eureka.enabled=false");
-		for (String service : (String[]) wireMockAnnotation.ribbonServices()) {
+		for (String service : wireMockAnnotation.ribbonServices()) {
 			properties.add(service + ".ribbon.listOfServers=localhost:" + port);
 		}
 
@@ -53,7 +53,7 @@ class WireMockListener extends AbstractTestExecutionListener implements Ordered 
 	}
 
 	@Override
-	public void beforeTestMethod(TestContext testContext) throws Exception {
+	public void beforeTestMethod(TestContext testContext) {
 		if(wireMockAnnotation == null) {
 			return;
 		}
@@ -78,7 +78,7 @@ class WireMockListener extends AbstractTestExecutionListener implements Ordered 
 	}
 
 	@Override
-	public void afterTestMethod(TestContext testContext) throws Exception {
+	public void afterTestMethod(TestContext testContext) {
 		if(wireMockAnnotation == null) {
 			return;
 		}
@@ -89,7 +89,7 @@ class WireMockListener extends AbstractTestExecutionListener implements Ordered 
 	}
 
 	@Override
-	public void afterTestClass(TestContext testContext) throws Exception {
+	public void afterTestClass(TestContext testContext) {
 		if(wireMockAnnotation == null) {
 			return;
 		}
