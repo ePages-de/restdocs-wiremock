@@ -1,7 +1,5 @@
 plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'jacoco'
-    id 'java'
     id 'maven-publish'
     id 'signing'
 }
@@ -27,12 +25,6 @@ group = 'com.epages'
 description = 'Adds WireMock stub snippets to Spring REST Docs'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-jacocoTestReport {
-    reports {
-        xml.required = true
-    }
-}
 
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
