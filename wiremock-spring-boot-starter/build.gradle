@@ -9,7 +9,7 @@ buildscript {
 
 plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
     id 'signing'
 }
@@ -26,12 +26,15 @@ group = 'com.epages'
 description = 'Spring Boot Starter for adding a WireMock server to your integration test'
 
 dependencies {
+    api 'com.github.tomakehurst:wiremock-standalone:2.18.0'
+
     implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter'
+
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
-    implementation 'com.github.tomakehurst:wiremock-standalone:2.18.0'
-    testImplementation 'org.springframework:spring-web'
+
     testImplementation 'junit:junit'
+    testImplementation 'org.springframework:spring-web'
 }
 
 task sourceJar(type: Jar) {
@@ -50,7 +53,7 @@ publishing {
             
             pom {
                   name = 'WireMock Spring Boot Starter'
-                  description = 'A Spring Boot Starter which adds a WireMockServer to your client\'s ApplicationContext for integration testing.'
+                  description = "A Spring Boot Starter which adds a WireMockServer to your client's ApplicationContext for integration testing."
                   url = 'https://github.com/ePages-de/restdocs-wiremock'
                   licenses {
                       license {
