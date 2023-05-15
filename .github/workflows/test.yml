@@ -1,11 +1,10 @@
 name: Test
 on:
-  # push:
-  #   branches:
-  #     - master
+  push:
+    branches:
+      - master
   pull_request:
     types: [opened, synchronize, reopened]
-  workflow_call:
 
 jobs:
   build:
