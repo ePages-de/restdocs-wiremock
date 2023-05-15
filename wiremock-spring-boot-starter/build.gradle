@@ -8,20 +8,11 @@ buildscript {
 }
 
 plugins {
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java-library'
-    id 'maven-publish'
-    id 'signing'
 }
 
 apply plugin: 'org.springframework.boot'
 
-repositories {
-    mavenCentral()
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 group = 'com.epages'
 description = 'Spring Boot Starter for adding a WireMock server to your integration test'
 
@@ -35,10 +26,6 @@ dependencies {
 
     testImplementation 'junit:junit'
     testImplementation 'org.springframework:spring-web'
-}
-
-task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
 }
 
 bootJar.enabled = false
@@ -76,15 +63,6 @@ publishing {
             }
         }
     }
-}
-
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
-
-javadoc {
-    options.addStringOption('Xdoclint:none', '-quiet')
 }
 
 signing {
