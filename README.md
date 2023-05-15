@@ -346,7 +346,7 @@ Given that the `master` branch on the upstream repository is in the state from w
 
 Use the intended version number as "Tag version", e.g. "0.8.5".
 
-This will automatically trigger a Travis build which publishes the JAR files for this release to Sonatype.
+This will automatically trigger a GitHub Action build which publishes the JAR files for this release to Sonatype.
 
 **(2) Login to Sonatype**
 
