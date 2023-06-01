@@ -1,4 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-	com.epages.wiremock.starter.WireMockAutoConfiguration
 org.springframework.test.context.TestExecutionListener = \
 	com.epages.wiremock.starter.WireMockListener
