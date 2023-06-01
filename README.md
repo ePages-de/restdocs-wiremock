@@ -51,7 +51,7 @@ In gradle it would look like this:
 
 ```groovy
 dependencies {
-  testCompile('com.epages:restdocs-wiremock:0.8.4')
+  testCompile('com.epages:restdocs-wiremock:0.8.5')
   testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
 }
 ```
@@ -62,7 +62,7 @@ When using maven:
 <dependency>
 	<groupId>com.epages</groupId>
 	<artifactId>restdocs-wiremock</artifactId>
-	<version>0.8.4</version>
+	<version>0.8.5</version>
 	<scope>test</scope>
 </dependency>
 <dependency>
@@ -230,7 +230,7 @@ On the client side, add a dependency to the test-runtime to the jar containing t
 that, the JSON files can be accessed as classpath resources.
 
 ```groovy
-testRuntime (group:'com.epages', name:'restdocs-server', version:'0.8.4', classifier:'wiremock', ext:'jar')
+testRuntime (group:'com.epages', name:'restdocs-server', version:'0.8.5', classifier:'wiremock', ext:'jar')
 ```
 
 ## How to use WireMock in your client tests
@@ -247,7 +247,7 @@ Services based on `spring-cloud-netflix`, i.e. using `feign` and `ribbon`, are a
 To add a dependency via gradle, extend your `build.gradle` with the following line:
 
 ```groovy
-testCompile('com.epages:wiremock-spring-boot-starter:0.8.4')
+testCompile('com.epages:wiremock-spring-boot-starter:0.8.5')
 ```
 
 
@@ -257,7 +257,7 @@ When using maven, add the following dependency in test scope.
 <dependency>
 	<groupId>com.epages</groupId>
 	<artifactId>wiremock-spring-boot-starter</artifactId>
-	<version>0.8.4</version>
+	<version>0.8.5</version>
 	<scope>test</scope>
 </dependency>
 ```
@@ -344,7 +344,7 @@ Given that the `master` branch on the upstream repository is in the state from w
 
 **(1) [Create release via the GitHub UI](https://github.com/ePages-de/restdocs-wiremock/releases/new)**
 
-Use the intended version number as "Tag version", e.g. "0.8.5".
+Use the intended version number as "Tag version".
 
 This will automatically trigger a GitHub Action build which publishes the JAR files for this release to Sonatype.
 
@@ -364,7 +364,7 @@ After few minutes, the release should be available in the ["Public Repositories"
 
 **(5) Update documentation**
 
-Create a new commit which updates the version numbers in the `README` file.
+Create a new commit which replaces the previous version number with the new version number in this `README` file.
 
 ## Other resources
 

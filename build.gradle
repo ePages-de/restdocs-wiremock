@@ -21,11 +21,6 @@ scmVersion {
     tag {
         prefix = ''
     }
-
-    hooks {
-        pre 'fileUpdate', [file: 'README.md', pattern: {v,p -> /($v)/}, replacement: {v, p -> "$v"}]
-        pre 'commit'
-    }
 }
 
 group = 'com.epages'
