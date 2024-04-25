@@ -17,7 +17,7 @@ group = 'com.epages'
 description = 'Spring Boot Starter for adding a WireMock server to your integration test'
 
 dependencies {
-    api 'com.github.tomakehurst:wiremock-standalone:2.27.2'
+    api 'org.wiremock:wiremock-standalone:3.5.3'
 
     implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter'
