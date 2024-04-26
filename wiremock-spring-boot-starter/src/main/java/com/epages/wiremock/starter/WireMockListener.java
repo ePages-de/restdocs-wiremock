@@ -73,7 +73,7 @@ class WireMockListener extends AbstractTestExecutionListener implements Ordered 
 		WireMockServer server = applicationContext.getBean(WireMockServer.class);
 		server.resetMappings();
 		if(! stubPath.isEmpty()) {
-			server.loadMappingsUsing(new JsonFileMappingsSource(new ClasspathFileSource(stubPath)));
+			server.loadMappingsUsing(new JsonFileMappingsSource(new ClasspathFileSource(stubPath), null));
 		}
 	}
 

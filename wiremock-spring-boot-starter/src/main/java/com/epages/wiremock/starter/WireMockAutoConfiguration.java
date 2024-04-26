@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.common.ClasspathFileSource;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 
 @AutoConfiguration
 @ConditionalOnClass({WireMockServer.class})
@@ -36,7 +35,6 @@ public class WireMockAutoConfiguration {
 		if(properties.getStubPath() != null) {
 			config.fileSource(new ClasspathFileSource(properties.getStubPath()));
 		}
-		config.extensions(new ResponseTemplateTransformer(false));
 		return config;
 	}
 
