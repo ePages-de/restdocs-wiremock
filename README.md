@@ -372,3 +372,4 @@ Create a new commit which replaces the previous version number with the new vers
 - [allegro/axion-release-plugin](https://axion-release-plugin.readthedocs.io)
 - [Maven Publish Plugin](https://docs.gradle.org/current/userguide/publishing_maven.html)
 - A similar approach is taken by [Spring Cloud Contract](https://cloud.spring.io/spring-cloud-contract/)
+...
