@@ -66,7 +66,7 @@ final class WireMockJsonSnippet implements Snippet {
 		OperationResponse response = operation.getResponse();
 
 		Maps.Builder<Object, Object> requestBuilder = Maps.builder()
-				.put("method", operation.getRequest().getMethod());
+				.put("method", operation.getRequest().getMethod().name());
 
 		urlPathOrUrlPattern(operation, requestBuilder);
 
@@ -132,11 +132,11 @@ final class WireMockJsonSnippet implements Snippet {
 	private Map<Object, Object> queryParams(Operation operation) {
 		Maps.Builder<Object, Object> queryParams = Maps.builder();
 
-		Parameters queryStringParameters = new QueryStringParser().parse(operation.getRequest().getUri());
+		QueryParameters queryStringParameters = QueryParameters.from(operation.getRequest());
 
 		for (Map.Entry<String, List<String>> e : queryStringParameters.entrySet()) {
 			List<String> values = e.getValue();
-			if (!values.isEmpty()) {
+			if (!values.isEmpty() && !values.get(0).isEmpty())  {
 				queryParams.put(e.getKey(), Maps.of("equalTo", values.get(0)));
 			}
 		}

@@ -102,7 +102,7 @@ class WireMockListener extends AbstractTestExecutionListener implements Ordered 
 	private void addPropertySourceProperties(TestContext testContext, String[] properties) {
 		try {
 			MergedContextConfiguration configuration = (MergedContextConfiguration) ReflectionTestUtils
-					.getField(testContext, "mergedContextConfiguration");
+					.getField(testContext, "mergedConfig");
 			new MergedContextConfigurationProperties(configuration).add(properties);
 		} catch (RuntimeException ex) {
 			throw ex;

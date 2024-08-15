@@ -1,13 +1,14 @@
 dependencies {
-    // FIXME: Starting with version 2.0.3.RELEASE there are missing dependencies from "org.springframework.web"
-    // See https://github.com/spring-projects/spring-restdocs/releases/tag/v2.0.4.RELEASE
-    implementation 'org.springframework.restdocs:spring-restdocs-core:2.0.3.RELEASE'
-    implementation 'com.jayway.jsonpath:json-path:2.8.0'
+    // See https://github.com/spring-projects/spring-restdocs/releases/tag/v3.0.0
+    implementation 'org.springframework.restdocs:spring-restdocs-core:3.0.1'
+    implementation 'org.springframework:spring-web:6.1.12'
+    implementation 'com.jayway.jsonpath:json-path:2.9.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.2'
     compileOnly 'junit:junit:4.13.2'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:5.11.0'
-    testImplementation 'org.skyscreamer:jsonassert:1.5.1'
-    testImplementation 'com.google.guava:guava:30.0-jre'
+    testImplementation 'org.skyscreamer:jsonassert:1.5.3'
+    testImplementation 'com.google.guava:guava:33.2.1-jre'
     testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 

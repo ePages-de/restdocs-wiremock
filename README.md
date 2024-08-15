@@ -51,7 +51,7 @@ In gradle it would look like this:
 
 ```groovy
 dependencies {
-  testCompile('com.epages:restdocs-wiremock:0.8.5')
+  testCompile('com.epages:restdocs-wiremock:0.8.9')
   testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
 }
 ```
@@ -62,7 +62,7 @@ When using maven:
 <dependency>
 	<groupId>com.epages</groupId>
 	<artifactId>restdocs-wiremock</artifactId>
-	<version>0.8.5</version>
+	<version>0.8.9</version>
 	<scope>test</scope>
 </dependency>
 <dependency>
