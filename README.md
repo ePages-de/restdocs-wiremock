@@ -230,7 +230,7 @@ On the client side, add a dependency to the test-runtime to the jar containing t
 that, the JSON files can be accessed as classpath resources.
 
 ```groovy
-testRuntime (group:'com.epages', name:'restdocs-server', version:'0.8.5', classifier:'wiremock', ext:'jar')
+testRuntime (group:'com.epages', name:'restdocs-server', version:'0.8.9', classifier:'wiremock', ext:'jar')
 ```
 
 ## How to use WireMock in your client tests
@@ -247,7 +247,7 @@ Services based on `spring-cloud-netflix`, i.e. using `feign` and `ribbon`, are a
 To add a dependency via gradle, extend your `build.gradle` with the following line:
 
 ```groovy
-testCompile('com.epages:wiremock-spring-boot-starter:0.8.5')
+testCompile('com.epages:wiremock-spring-boot-starter:0.8.9')
 ```
 
 
@@ -257,7 +257,7 @@ When using maven, add the following dependency in test scope.
 <dependency>
 	<groupId>com.epages</groupId>
 	<artifactId>wiremock-spring-boot-starter</artifactId>
-	<version>0.8.5</version>
+	<version>0.8.9</version>
 	<scope>test</scope>
 </dependency>
 ```
