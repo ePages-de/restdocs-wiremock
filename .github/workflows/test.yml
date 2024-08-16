@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - master
-      - 1.x
+      - '*.x'
   pull_request:
     types: [opened, synchronize, reopened]
 
