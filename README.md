@@ -42,9 +42,9 @@ This repository consists of two libraries:
 There are multiple major versions of the libraries in different branches.
 The following table provides an overview which "restdocs-wiremock" release branch is to be used for microservices on specific Spring Boot versions.
 
-| ng-shared version                                                     | Spring Boot version | Java version |
+| restdocs-wiremock version                                                     | Spring Boot version | Java version |
 |-----------------------------------------------------------------------|---------------------|--------------|
-| [10.x](https://github.com/ePages-de/restdocs-wiremock/releases?q=1.)  | 3.3.x               | 21           |
+| [1.x.x](https://github.com/ePages-de/restdocs-wiremock/releases?q=1.) | 3.3.x               | 21           |
 | [0.x.x](https://github.com/ePages-de/restdocs-wiremock/releases?q=0.) | 2.7.x               | 17           |
 
 ## How to include `restdocs-wiremock` into your server project
