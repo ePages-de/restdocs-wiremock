@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.7.18'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:3.3.2'
     }
 }
 
@@ -17,7 +17,7 @@ group = 'com.epages'
 description = 'Spring Boot Starter for adding a WireMock server to your integration test'
 
 dependencies {
-    api 'org.wiremock:wiremock-standalone:3.5.3'
+    api 'org.wiremock:wiremock-standalone:3.9.1'
 
     implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter'

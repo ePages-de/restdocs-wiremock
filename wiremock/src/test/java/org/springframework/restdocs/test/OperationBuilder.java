@@ -37,7 +37,7 @@ import org.springframework.restdocs.operation.OperationRequestPart;
 import org.springframework.restdocs.operation.OperationRequestPartFactory;
 import org.springframework.restdocs.operation.OperationResponse;
 import org.springframework.restdocs.operation.OperationResponseFactory;
-import org.springframework.restdocs.operation.Parameters;
+import org.springframework.restdocs.operation.QueryParameters;
 import org.springframework.restdocs.operation.StandardOperation;
 import org.springframework.restdocs.snippet.RestDocumentationContextPlaceholderResolverFactory;
 import org.springframework.restdocs.snippet.StandardWriterResolver;
@@ -137,7 +137,7 @@ public class OperationBuilder {
 
 		private HttpHeaders headers = new HttpHeaders();
 
-		private Parameters parameters = new Parameters();
+		private QueryParameters parameters;
 
 		private List<OperationRequestPartBuilder> partBuilders = new ArrayList<>();
 
@@ -151,7 +151,7 @@ public class OperationBuilder {
 				parts.add(builder.buildPart());
 			}
 			return new OperationRequestFactory().create(this.requestUri, this.method,
-					this.content, this.headers, this.parameters, parts);
+					this.content, this.headers, parts);
 		}
 
 		public Operation build() {
