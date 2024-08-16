@@ -16,6 +16,7 @@ Details and background information can be read on our [ePages Developer Blog](ht
 <!-- TOC depthFrom:2 depthTo:3 -->
 
 - [Contents](#contents)
+- [Versions](#versions)
 - [How to include `restdocs-wiremock` into your server project](#how-to-include-restdocs-wiremock-into-your-server-project)
     - [Dependencies](#dependencies)
     - [Producing snippets](#producing-snippets)
@@ -35,6 +36,16 @@ This repository consists of two libraries:
 * `restdocs-wiremock`: The library to extend Spring REST Docs with WireMock stub snippet generation.
 * `wiremock-spring-boot-starter`: A spring boot starter which adds a `WireMockServer` to your client's ApplicationContext for integration testing.
   This is optional, but highly recommended when verifying your client contract in a SpringBootTest.
+
+## Versions
+
+There are multiple major versions of the libraries in different branches.
+The following table provides an overview which "restdocs-wiremock" release branch is to be used for microservices on specific Spring Boot versions.
+
+| ng-shared version                                                     | Spring Boot version | Java version |
+|-----------------------------------------------------------------------|---------------------|--------------|
+| [10.x](https://github.com/ePages-de/restdocs-wiremock/releases?q=1.)  | 3.3.x               | 21           |
+| [0.x.x](https://github.com/ePages-de/restdocs-wiremock/releases?q=0.) | 2.7.x               | 17           |
 
 ## How to include `restdocs-wiremock` into your server project
 
