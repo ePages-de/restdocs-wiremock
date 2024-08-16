@@ -62,7 +62,7 @@ In gradle it would look like this:
 
 ```groovy
 dependencies {
-  testCompile('com.epages:restdocs-wiremock:0.8.9')
+  testCompile('com.epages:restdocs-wiremock:1.0.0')
   testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
 }
 ```
@@ -73,7 +73,7 @@ When using maven:
 <dependency>
 	<groupId>com.epages</groupId>
 	<artifactId>restdocs-wiremock</artifactId>
-	<version>0.8.9</version>
+	<version>1.0.0</version>
 	<scope>test</scope>
 </dependency>
 <dependency>
@@ -241,7 +241,7 @@ On the client side, add a dependency to the test-runtime to the jar containing t
 that, the JSON files can be accessed as classpath resources.
 
 ```groovy
-testRuntime (group:'com.epages', name:'restdocs-server', version:'0.8.9', classifier:'wiremock', ext:'jar')
+testRuntime (group:'com.epages', name:'restdocs-server', version:'1.0.0', classifier:'wiremock', ext:'jar')
 ```
 
 ## How to use WireMock in your client tests
@@ -258,7 +258,7 @@ Services based on `spring-cloud-netflix`, i.e. using `feign` and `ribbon`, are a
 To add a dependency via gradle, extend your `build.gradle` with the following line:
 
 ```groovy
-testCompile('com.epages:wiremock-spring-boot-starter:0.8.9')
+testCompile('com.epages:wiremock-spring-boot-starter:1.0.0')
 ```
 
 
@@ -268,7 +268,7 @@ When using maven, add the following dependency in test scope.
 <dependency>
 	<groupId>com.epages</groupId>
 	<artifactId>wiremock-spring-boot-starter</artifactId>
-	<version>0.8.9</version>
+	<version>1.0.0</version>
 	<scope>test</scope>
 </dependency>
 ```
@@ -326,7 +326,7 @@ public class MyTest {
 
 ## Building from source
 
-This project uses JDK 11, with source compatibility for Java 1.8.
+This project uses JDK 21, with source compatibility for Java 21.
 The JDK can be used via [SDKMAN!](https://sdkman.io/).
 
 Please execute at least step 1 + 2 if before importing restdocs-wiremock into your IDE.
