@@ -5,11 +5,11 @@ buildscript {
 }
 
 plugins {
-    id 'com.github.ben-manes.versions' version '0.46.0'
-    id 'io.github.gradle-nexus.publish-plugin' version '1.3.0'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'com.github.ben-manes.versions' version '0.51.0'
+    id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
+    id 'io.spring.dependency-management' version '1.1.6'
     id 'org.sonarqube' version '4.0.0.2929'
-    id 'pl.allegro.tech.build.axion-release' version '1.15.0'
+    id 'pl.allegro.tech.build.axion-release' version '1.18.4'
     id 'publishing'
 }
 
