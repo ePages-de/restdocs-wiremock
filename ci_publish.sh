@@ -29,7 +29,7 @@ if [[ ! -f "${SECRET_KEYS_FILE}" ]]; then
 fi
 
 # Publish
-./gradlew publishToSonatype \
+./gradlew publishToSonatype closeSonatypeStagingRepository \
 	--info \
 	-Dorg.gradle.project.sonatypeUsername="${SONATYPE_USERNAME}" \
 	-Dorg.gradle.project.sonatypePassword="${SONATYPE_PASSWORD}" \
