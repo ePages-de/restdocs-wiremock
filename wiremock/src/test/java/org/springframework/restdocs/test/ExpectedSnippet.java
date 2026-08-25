@@ -17,26 +17,26 @@
 package org.springframework.restdocs.test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.File;
 
 import org.hamcrest.Matcher;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.restdocs.snippet.TemplatedSnippet;
 import org.springframework.restdocs.templates.TemplateFormat;
 import org.springframework.restdocs.test.SnippetMatchers.SnippetMatcher;
 
 /**
- * The {@code ExpectedSnippet} rule is used to verify that a {@link TemplatedSnippet} has
- * generated the expected snippet.
+ * The {@code ExpectedSnippet} JUnit Jupiter extension is used to verify that a
+ * {@link TemplatedSnippet} has generated the expected snippet.
  *
  * @author Andy Wilkinson
  * @author Andreas Evers
  */
-public class ExpectedSnippet implements TestRule {
+public class ExpectedSnippet implements BeforeEachCallback, AfterEachCallback {
 
 	private final TemplateFormat templateFormat;
 
@@ -54,10 +54,14 @@ public class ExpectedSnippet implements TestRule {
 	}
 
 	@Override
-	public Statement apply(final Statement base, Description description) {
+	public void beforeEach(ExtensionContext context) {
 		this.outputDirectory = new File(
-				"build/" + description.getTestClass().getSimpleName());
-		return new ExpectedSnippetStatement(base);
+				"build/" + context.getRequiredTestClass().getSimpleName());
+	}
+
+	@Override
+	public void afterEach(ExtensionContext context) {
+		verifySnippet();
 	}
 
 	private void verifySnippet() {
@@ -86,22 +90,6 @@ public class ExpectedSnippet implements TestRule {
 
 	public File getOutputDirectory() {
 		return this.outputDirectory;
-	}
-
-	private final class ExpectedSnippetStatement extends Statement {
-
-		private final Statement delegate;
-
-		private ExpectedSnippetStatement(Statement delegate) {
-			this.delegate = delegate;
-		}
-
-		@Override
-		public void evaluate() throws Throwable {
-			this.delegate.evaluate();
-			verifySnippet();
-		}
-
 	}
 
 }

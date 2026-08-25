@@ -2,16 +2,17 @@ package com.epages.restdocs;
 
 import static com.epages.restdocs.WireMockDocumentation.templatedResponseField;
 import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.Collections;
 
 import org.json.JSONException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.web.util.UriTemplate;
 
-public class ResponseTemplateProcessorTest {
+class ResponseTemplateProcessorTest {
 
     private String jsonBody = "{\n" +
             "  \"id\": \"the-id\",\n" +
@@ -19,7 +20,7 @@ public class ResponseTemplateProcessorTest {
             "}";
 
     @Test
-    public void should_replace_with_uri_variable_expression() throws JSONException {
+    void should_replace_with_uri_variable_expression() throws JSONException {
         ResponseFieldTemplateDescriptor templateDescriptor = templatedResponseField("id").replacedWithUriTemplateVariableValue("someId");
         ResponseTemplateProcessor templateProcessor = new ResponseTemplateProcessor(
                 singletonList(templateDescriptor),
@@ -36,7 +37,7 @@ public class ResponseTemplateProcessorTest {
     }
 
     @Test
-    public void should_handle_multiple_descriptors() throws JSONException {
+    void should_handle_multiple_descriptors() throws JSONException {
         ResponseTemplateProcessor templateProcessor = new ResponseTemplateProcessor(
                 Arrays.asList(
                         templatedResponseField("id").replacedWithWireMockTemplateExpression("randomValue length=33 type='ALPHANUMERIC'"),
@@ -55,7 +56,7 @@ public class ResponseTemplateProcessorTest {
     }
 
     @Test
-    public void should_return_response_on_empty_descriptors() throws JSONException {
+    void should_return_response_on_empty_descriptors() throws JSONException {
         ResponseTemplateProcessor templateProcessor = new ResponseTemplateProcessor(
                 Collections.emptyList(),
                 null,
@@ -66,14 +67,14 @@ public class ResponseTemplateProcessorTest {
         JSONAssert.assertEquals(jsonBody, result, true);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void should_throw_when_variable_name_not_found() {
+    @Test
+    void should_throw_when_variable_name_not_found() {
         ResponseFieldTemplateDescriptor templateDescriptor = templatedResponseField("id").replacedWithUriTemplateVariableValue("someId");
         ResponseTemplateProcessor templateProcessor = new ResponseTemplateProcessor(
                 singletonList(templateDescriptor),
                 new UriTemplate("http://localhost/api/things/{someOtherId}"),
                 jsonBody);
 
-        templateProcessor.replaceTemplateFields();
+        assertThrows(IllegalArgumentException.class, templateProcessor::replaceTemplateFields);
     }
 }

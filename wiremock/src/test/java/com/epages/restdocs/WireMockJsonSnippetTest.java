@@ -11,6 +11,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.generate.RestDocumentationGenerator.ATTRIBUTE_NAME_URL_TEMPLATE;
 
@@ -19,10 +21,9 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.generate.RestDocumentationGenerator;
 import org.springframework.restdocs.operation.Operation;
@@ -37,21 +38,21 @@ import org.springframework.restdocs.templates.TemplateFormat;
 import org.springframework.restdocs.test.ExpectedSnippet;
 import org.springframework.restdocs.test.OperationBuilder;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 
-public class WireMockJsonSnippetTest {
+class WireMockJsonSnippetTest {
 
 	private static final TemplateFormat FORMAT = WireMockJsonSnippet.TEMPLATE_FORMAT;
 
-	@Rule
+	@RegisterExtension
 	public ExpectedSnippet expectedSnippet = new ExpectedSnippet(FORMAT);
 
 	@SuppressWarnings("unchecked")
-	private final RequestConverter<Object> requestConverter = Mockito.mock(RequestConverter.class);
+	private final RequestConverter<Object> requestConverter = mock(RequestConverter.class);
 
 	@SuppressWarnings("unchecked")
-	private final ResponseConverter<Object> responseConverter = Mockito.mock(ResponseConverter.class);
+	private final ResponseConverter<Object> responseConverter = mock(ResponseConverter.class);
 
 	private final Object request = new Object();
 
@@ -62,10 +63,10 @@ public class WireMockJsonSnippetTest {
 
 	private final OperationResponse operationResponse = new OperationResponseFactory().create(null, null, null);
 
-	private final Snippet snippet = Mockito.mock(Snippet.class);
+	private final Snippet snippet = mock(Snippet.class);
 
 	@Test
-	public void basicHandling() throws IOException {
+	void basicHandling() throws IOException {
 		given(this.requestConverter.convert(this.request)).willReturn(this.operationRequest);
 		given(this.responseConverter.convert(this.response)).willReturn(this.operationResponse);
 		HashMap<String, Object> configuration = new HashMap<>();
@@ -76,7 +77,7 @@ public class WireMockJsonSnippetTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void simpleRequest() throws IOException {
+	void simpleRequest() throws IOException {
 		String expectedJson = new ObjectMapper().writeValueAsString(expectedJsonForSimpleRequest());
 
 		this.expectedSnippet.expectWireMockJson("simple-request").withContents(sameJSONAs(expectedJson));
@@ -94,7 +95,7 @@ public class WireMockJsonSnippetTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void simpleRequestWithUriTemplate() throws IOException {
+	void simpleRequestWithUriTemplate() throws IOException {
 		String expectedJson = new ObjectMapper().writeValueAsString(
 			expectedJsonForSimpleRequestWithUrlPattern()
 		);
@@ -118,7 +119,7 @@ public class WireMockJsonSnippetTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void simpleRequestWithUriTemplateAndResponseTemplate() throws IOException {
+	void simpleRequestWithUriTemplateAndResponseTemplate() throws IOException {
 		String expected = new ObjectMapper().writeValueAsString(
 			expectedJsonForSimpleRequestWithUrlPatternAndResponseTemplate()
 		);
@@ -138,7 +139,7 @@ public class WireMockJsonSnippetTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void simpleRequestWithUriTemplateAndResponseTemplate1() throws IOException {
+	void simpleRequestWithUriTemplateAndResponseTemplate1() throws IOException {
 		String expectedJson = new ObjectMapper().writeValueAsString(
 			expectedJsonForSimpleRequestWithUrlPatternAndResponseTemplate()
 		);
@@ -170,7 +171,7 @@ public class WireMockJsonSnippetTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getRequestWithParams() throws IOException {
+	void getRequestWithParams() throws IOException {
 		String expectedJson = new ObjectMapper().writeValueAsString(
 			of(
 				"request",
@@ -190,7 +191,7 @@ public class WireMockJsonSnippetTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void postRequest() throws IOException {
+	void postRequest() throws IOException {
 		String expectedJson = new ObjectMapper().writeValueAsString(
 			of(
 				"request",
@@ -211,7 +212,7 @@ public class WireMockJsonSnippetTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void customMediaType() throws IOException {
+	void customMediaType() throws IOException {
 		String expectedJson = new ObjectMapper().writeValueAsString(
 			of(
 				"request",
@@ -238,7 +239,7 @@ public class WireMockJsonSnippetTest {
 	private void verifySnippetInvocation(Snippet snippet, Map<String, Object> attributes, int times)
 			throws IOException {
 		ArgumentCaptor<Operation> operation = ArgumentCaptor.forClass(Operation.class);
-		verify(snippet, Mockito.times(times)).document(operation.capture());
+		verify(snippet, times(times)).document(operation.capture());
 		assertThat(this.operationRequest, is(equalTo(operation.getValue().getRequest())));
 		assertThat(this.operationResponse, is(equalTo(operation.getValue().getResponse())));
 		assertThat(attributes, is(equalTo(operation.getValue().getAttributes())));

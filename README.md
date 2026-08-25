@@ -42,8 +42,9 @@ This repository consists of two libraries:
 There are multiple major versions of the libraries in different branches.
 The following table provides an overview which "restdocs-wiremock" release branch is to be used for microservices on specific Spring Boot versions.
 
-| restdocs-wiremock version                                                     | Spring Boot version | Java version |
+| restdocs-wiremock version                                             | Spring Boot version | Java version |
 |-----------------------------------------------------------------------|---------------------|--------------|
+| [2.x.x](https://github.com/ePages-de/restdocs-wiremock/releases?q=2.) | 4.x.x               | 21           |
 | [1.x.x](https://github.com/ePages-de/restdocs-wiremock/releases?q=1.) | 3.3.x               | 21           |
 | [0.x.x](https://github.com/ePages-de/restdocs-wiremock/releases?q=0.) | 2.7.x               | 17           |
 
@@ -62,7 +63,7 @@ In gradle it would look like this:
 
 ```groovy
 dependencies {
-  testCompile('com.epages:restdocs-wiremock:1.0.0')
+  testCompile('com.epages:restdocs-wiremock:2.0.0')
   testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
 }
 ```
@@ -73,7 +74,7 @@ When using maven:
 <dependency>
 	<groupId>com.epages</groupId>
 	<artifactId>restdocs-wiremock</artifactId>
-	<version>1.0.0</version>
+	<version>2.0.0</version>
 	<scope>test</scope>
 </dependency>
 <dependency>
@@ -279,7 +280,7 @@ transitive versions coming in through maven dependencies, you need to add an exp
 project, like shown in the following gradle example:
 
 ```groovy
-  testCompile('com.github.tomakehurst:wiremock:2.10.1')
+  testCompile('org.wiremock:wiremock:3.13.2')
 ```
 
 ### Configuring your test to use the WireMock stubs
@@ -287,7 +288,7 @@ project, like shown in the following gradle example:
 Here is an excerpt of the sample test from a restdocs client project to illustrate the usage.
 
 ```java
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringApplicationConfiguration(classes = { ClientApplication.class })
 @ActiveProfiles("test") // (1)
 @WireMockTest(stubPath = "wiremock/restdocs-server") // (2)

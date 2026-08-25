@@ -1,26 +1,28 @@
 package com.epages.wiremock.starter;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes=TestApp.class)
 @ActiveProfiles("test")
-public class WithoutWiremockTest {
+class WithoutWiremockTest {
 
 	@Autowired(required = false)
 	private WireMockServer server;
 
 	@Test
-	public void should_not_have_wiremock_server() {
-		Assert.assertNull(server);
+	void should_not_have_wiremock_server() {
+		assertThat(server).isNull();
 	}
 	
 }

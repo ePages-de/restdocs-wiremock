@@ -1,7 +1,6 @@
 package com.epages.restdocs;
 
-import org.junit.rules.TestRule;
-import org.springframework.restdocs.JUnitRestDocumentation;
+import org.springframework.restdocs.RestDocumentationExtension;
 
 /**
  * Convenience helper for running Spring REST Docs in JUnit.
@@ -10,19 +9,19 @@ import org.springframework.restdocs.JUnitRestDocumentation;
 public abstract class RestDocumentation {
 
 	/**
-	 * @return JUnit {@link TestRule} for Spring REST Docs, preconfigured for
+	 * @return JUnit Jupiter {@link RestDocumentationExtension} for Spring REST Docs, preconfigured for
 	 *         writing to build/generated-snippets.
 	 */
-	public static JUnitRestDocumentation usingGradleDir() {
-		return new JUnitRestDocumentation("build/generated-snippets");
+	public static RestDocumentationExtension usingGradleDir() {
+		return new RestDocumentationExtension("build/generated-snippets");
 	}
 
 	/**
-	 * @return JUnit {@link TestRule} for Spring REST Docs, preconfigured for
+	 * @return JUnit Jupiter {@link RestDocumentationExtension} for Spring REST Docs, preconfigured for
 	 *         writing to target/generated-snippets.
 	 */
-	public static JUnitRestDocumentation usingMavenDir() {
-		return new JUnitRestDocumentation("target/generated-snippets");
+	public static RestDocumentationExtension usingMavenDir() {
+		return new RestDocumentationExtension("target/generated-snippets");
 	}
 
 }

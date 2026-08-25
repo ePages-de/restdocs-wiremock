@@ -1,16 +1,17 @@
 package com.epages.restdocs;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.restdocs.JUnitRestDocumentation;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class RestDocumentationTest {
+import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.RestDocumentationExtension;
+
+class RestDocumentationTest {
 
 	@Test
-	public void should_create_restdocumentation() {
-		JUnitRestDocumentation documentation1 = RestDocumentation.usingGradleDir();
-		Assert.assertNotNull(documentation1);
-		JUnitRestDocumentation documentation2 = RestDocumentation.usingMavenDir();
-		Assert.assertNotNull(documentation2);
+	void should_create_restdocumentation() {
+		RestDocumentationExtension documentation1 = RestDocumentation.usingGradleDir();
+		assertNotNull(documentation1);
+		RestDocumentationExtension documentation2 = RestDocumentation.usingMavenDir();
+		assertNotNull(documentation2);
 	}
 }

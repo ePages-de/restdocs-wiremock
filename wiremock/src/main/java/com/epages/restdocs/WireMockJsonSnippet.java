@@ -1,8 +1,8 @@
 package com.epages.restdocs;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.json.JsonMapper;
 import org.springframework.restdocs.RestDocumentationContext;
 import org.springframework.restdocs.operation.*;
 import org.springframework.restdocs.snippet.RestDocumentationContextPlaceholderResolverFactory;
@@ -58,8 +58,12 @@ final class WireMockJsonSnippet implements Snippet {
 		}
 	}
 
-	private String toJsonString(Operation operation) throws JsonProcessingException {
-		return new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValueAsString(createModel(operation));
+	private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
+			.enable(SerializationFeature.INDENT_OUTPUT)
+			.build();
+
+	private String toJsonString(Operation operation) {
+		return OBJECT_MAPPER.writeValueAsString(createModel(operation));
 	}
 
 	protected Map<Object, Object> createModel(Operation operation) {
@@ -104,7 +108,7 @@ final class WireMockJsonSnippet implements Snippet {
 	 */
 	private void urlPathOrUrlPattern(Operation operation, Maps.Builder<Object, Object> requestBuilder) {
 		String urlTemplate = (String) operation.getAttributes().get(ATTRIBUTE_NAME_URL_TEMPLATE);
-		if (StringUtils.isEmpty(urlTemplate)) {
+		if (!StringUtils.hasText(urlTemplate)) {
 			requestBuilder.put("urlPath", operation.getRequest().getUri().getRawPath());
 		} else {
 			UriTemplate uriTemplate = new UriTemplate(urlTemplate);
@@ -120,10 +124,10 @@ final class WireMockJsonSnippet implements Snippet {
 
 	private Map<Object, Object> responseHeaders(OperationResponse response) {
 		Maps.Builder<Object, Object> responseHeaders = Maps.builder();
-		for (Map.Entry<String, List<String>> e : response.getHeaders().entrySet()) {
+		for (Map.Entry<String, List<String>> e : response.getHeaders().headerSet()) {
 			List<String> values = e.getValue();
 			if (!values.isEmpty()) {
-				responseHeaders.put(e.getKey(), values.get(0));
+				responseHeaders.put(e.getKey(), values.getFirst());
 			}
 		}
 		return responseHeaders.build();
@@ -136,8 +140,8 @@ final class WireMockJsonSnippet implements Snippet {
 
 		for (Map.Entry<String, List<String>> e : queryStringParameters.entrySet()) {
 			List<String> values = e.getValue();
-			if (!values.isEmpty() && !values.get(0).isEmpty())  {
-				queryParams.put(e.getKey(), Maps.of("equalTo", values.get(0)));
+			if (!values.isEmpty() && !values.getFirst().isEmpty())  {
+				queryParams.put(e.getKey(), Maps.of("equalTo", values.getFirst()));
 			}
 		}
 
@@ -155,12 +159,11 @@ final class WireMockJsonSnippet implements Snippet {
 
 	private Map<Object, Object> requestHeaders(OperationRequest request) {
 		Maps.Builder<Object, Object> requestHeaders = Maps.builder();
-		for (Map.Entry<String, List<String>> e : request.getHeaders().entrySet()) {
+		for (Map.Entry<String, List<String>> e : request.getHeaders().headerSet()) {
 			if ("content-type".equalsIgnoreCase(e.getKey()) || "accept".equalsIgnoreCase(e.getKey())) {
 				List<String> values = e.getValue();
 				if (!values.isEmpty()) {
-					String mediaType = values.get(0);
-					// TODO : use proper MediaType parsing
+					String mediaType = values.getFirst();
 					if(mediaType.contains("+")) {
 						mediaType = mediaType.replaceAll(".*[+]","");
 					} else {

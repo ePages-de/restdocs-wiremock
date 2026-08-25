@@ -5,11 +5,11 @@ buildscript {
 }
 
 plugins {
-    id 'com.github.ben-manes.versions' version '0.51.0'
+    id 'com.github.ben-manes.versions' version '0.61.0'
     id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
-    id 'io.spring.dependency-management' version '1.1.6'
-    id 'org.sonarqube' version '4.0.0.2929'
-    id 'pl.allegro.tech.build.axion-release' version '1.18.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.sonarqube' version '7.4.0.8496'
+    id 'pl.allegro.tech.build.axion-release' version '1.21.3'
     id 'publishing'
 }
 
@@ -40,10 +40,14 @@ subprojects {
         mavenCentral()
     }
 
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    plugins.withType(JavaPlugin).configureEach {
+        java {
+            sourceCompatibility = JavaVersion.VERSION_21
+            targetCompatibility = JavaVersion.VERSION_21
+        }
+    }
 
-    task sourceJar(type: Jar) {
+    tasks.register('sourceJar', Jar) {
         from sourceSets.main.allJava
     }
 
@@ -63,6 +67,10 @@ subprojects {
         }
     }
     test.finalizedBy jacocoTestReport
+
+    tasks.withType(Test).configureEach {
+        useJUnitPlatform()
+    }
 }
 
 nexusPublishing {
