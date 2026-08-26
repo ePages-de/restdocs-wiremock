@@ -44,6 +44,7 @@ The following table provides an overview which "restdocs-wiremock" release branc
 
 | restdocs-wiremock version                                                     | Spring Boot version | Java version |
 |-----------------------------------------------------------------------|---------------------|--------------|
+| [2.x.x](https://github.com/ePages-de/restdocs-wiremock/releases?q=2.) | 4.1.x               | 21           |
 | [1.x.x](https://github.com/ePages-de/restdocs-wiremock/releases?q=1.) | 3.3.x               | 21           |
 | [0.x.x](https://github.com/ePages-de/restdocs-wiremock/releases?q=0.) | 2.7.x               | 17           |
 
